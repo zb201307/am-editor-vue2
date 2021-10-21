@@ -44,6 +44,7 @@ import {
   ToolbarComponent,
 } from "../../packages/toolbar/src";
 import Link from "../../packages/link/src";
+import CodeBlock, { CodeBlockComponent } from "../../packages/codeblock/src";
 
 const DOMAIN = "https://editor.yanmao.cc/api";
 
@@ -84,6 +85,7 @@ export const plugins: Array<PluginEntry> = [
   LineHeight,
   Mention,
   Link,
+  CodeBlock,
   ToolbarPlugin,
 ];
 
@@ -97,6 +99,7 @@ export const cards: Array<CardEntry> = [
   MathComponent,
   StatusComponent,
   MentionComponent,
+  CodeBlockComponent,
   ToolbarComponent,
 ];
 let engine: EngineInterface | null = null;
