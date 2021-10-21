@@ -198,7 +198,7 @@ export default class Editor extends Vue {
   background: #fafafa;
   background-color: #fafafa;
   padding: 62px 0 64px;
-  height: calc(100vh - 56px);
+  height: calc(100vh);
   width: 100%;
   margin: 0 auto;
   overflow: auto;

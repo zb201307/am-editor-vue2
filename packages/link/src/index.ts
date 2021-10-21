@@ -61,16 +61,16 @@ export default class extends InlinePlugin<Options> {
 		return this.options.hotkey || { key: 'mod+k', args: ['_blank'] };
 	}
 
-	execute() {
+	execute(...rest: any) {
 		if (!isEngine(this.editor)) return;
 		const { inline, change, history } = this.editor;
 		if (!this.queryState()) {
 			const inlineNode = $(`<${this.tagName} />`);
-			this.setStyle(inlineNode, ...arguments);
-			this.setAttributes(inlineNode, ...arguments);
-			const text = arguments.length > 2 ? arguments[2] : '';
+			this.setStyle(inlineNode, ...rest);
+			this.setAttributes(inlineNode, ...rest);
+			const text = rest.length > 2 ? rest[2] : '';
 
-			if (!!text) {
+			if (text) {
 				inlineNode.text(text);
 				inline.insert(inlineNode);
 			} else {
@@ -152,17 +152,17 @@ export default class extends InlinePlugin<Options> {
 	pasteMarkdown(node: NodeInterface) {
 		const result = this.checkMarkdown(node);
 		if (!result) return;
-		let { reg, match } = result;
+		let { match } = result;
 		if (!match) return;
 
 		let newText = '';
 		let textNode = node.clone(true).get<Text>()!;
 		while (
 			textNode.textContent &&
-			(match = reg.exec(textNode.textContent))
+			(match = result.reg.exec(textNode.textContent))
 		) {
 			//从匹配到的位置切断
-			let regNode = textNode.splitText(match.index + 1);
+			const regNode = textNode.splitText(match.index + 1);
 			newText += textNode.textContent;
 			//从匹配结束位置分割
 			textNode = regNode.splitText(match[0].length - 1);
@@ -172,7 +172,7 @@ export default class extends InlinePlugin<Options> {
 
 			const inlineNode = $(`<${this.tagName} />`);
 			this.setAttributes(inlineNode, '_blank', url);
-			inlineNode.text(!!text ? text : url);
+			inlineNode.text(text ? text : url);
 
 			newText += inlineNode.get<Element>()?.outerHTML;
 		}

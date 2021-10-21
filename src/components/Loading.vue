@@ -1,5 +1,9 @@
 <template>
-  <div class="loading" :tip="text" :spinning="loading">
+  <div
+    :class="['loading', { active: loading }]"
+    :tip="text"
+    :spinning="loading"
+  >
     <slot></slot>
   </div>
 </template>
@@ -14,7 +18,7 @@ export default {
 };
 </script>
 <style>
-.loading {
+.loading.active {
   padding: 20px;
   display: block;
 }
