@@ -67,7 +67,6 @@ export default class CollapseItem extends Vue  {
     }
 
     handleClick(event: MouseEvent){
-
         if(this.disabled) return
 
         const nodeName = (event.target as Node).nodeName;

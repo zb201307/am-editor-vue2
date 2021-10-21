@@ -63,7 +63,6 @@ export default class ToolbarGroup extends Vue {
     isMobile = false
 
     mounted() {
-        console.log(this.items)
         this.isMobile = isMobile
     }
 

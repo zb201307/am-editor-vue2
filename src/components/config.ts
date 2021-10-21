@@ -38,7 +38,11 @@ import Fontfamily from "@aomao/plugin-fontfamily";
 import Status, { StatusComponent } from "@aomao/plugin-status";
 import LineHeight from "@aomao/plugin-line-height";
 import Mention, { MentionComponent } from "@aomao/plugin-mention";
-import { fontFamilyDefaultData } from "../../packages/toolbar/src";
+import {
+  fontFamilyDefaultData,
+  ToolbarPlugin,
+  ToolbarComponent,
+} from "../../packages/toolbar/src";
 
 const DOMAIN = "https://editor.yanmao.cc/api";
 
@@ -78,6 +82,7 @@ export const plugins: Array<PluginEntry> = [
   Status,
   LineHeight,
   Mention,
+  ToolbarPlugin,
 ];
 
 export const cards: Array<CardEntry> = [
@@ -90,6 +95,7 @@ export const cards: Array<CardEntry> = [
   MathComponent,
   StatusComponent,
   MentionComponent,
+  ToolbarComponent,
 ];
 let engine: EngineInterface | null = null;
 

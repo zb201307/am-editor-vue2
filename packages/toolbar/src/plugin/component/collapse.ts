@@ -1,8 +1,8 @@
-import { createApp, App } from 'vue';
+import Vue from 'vue';
 import Keymaster, { deleteScope, setScope, unbind } from 'keymaster';
 import { $, EngineInterface, NodeInterface, Position } from '@aomao/engine';
 import Collapse from '../../components/collapse/collapse.vue';
-import { CollapseGroupProps } from '../../types';
+import { CollapseGroupProps, CollapseProps } from '../../types';
 
 export type Options = {
 	onCancel?: () => void;
@@ -26,7 +26,7 @@ class CollapseComponent implements CollapseComponentInterface {
 	private engine: EngineInterface;
 	private root?: NodeInterface;
 	private otpions: Options;
-	private vm?: App;
+	private vm?: Vue;
 	#position?: Position;
 	private readonly SCOPE_NAME = 'data-toolbar-component';
 
@@ -131,7 +131,10 @@ class CollapseComponent implements CollapseComponentInterface {
 	remove() {
 		if (!this.root || this.root.length === 0) return;
 		this.#position?.destroy();
-		if (this.vm) this.vm.unmount();
+		if (this.vm) {
+			this.vm.$destroy();
+			this.vm = undefined
+		}
 		this.root.remove();
 		this.root = undefined;
 	}
@@ -150,12 +153,19 @@ class CollapseComponent implements CollapseComponentInterface {
 
 		const { onSelect } = this.otpions;
 		if (data.length > 0) {
-			this.vm = createApp(Collapse, {
-				engine: this.engine,
-				groups: data,
-				onSelect,
-			});
-			this.vm.mount(rootElement);
+			const engine = this.engine
+			this.vm = new Vue({ 
+				render: (h) => {
+					return h(Collapse, {
+						props: {
+							engine,
+							groups: data,
+							onSelect,
+						}
+					})
+				}
+			})
+			rootElement.append(this.vm!.$mount().$el)
 		} else {
 			this.root.append(
 				`<div class="data-toolbar-component-list-empty">${this.engine.language.get(
@@ -165,10 +175,12 @@ class CollapseComponent implements CollapseComponentInterface {
 				)}</div>`,
 			);
 		}
-
-		this.select(0);
 		this.bindEvents();
-		this.#position?.bind(this.root, target);
+		this.#position?.bind(this.root!, target);
+		
+		setTimeout(() => {
+			this.select(0);
+		}, 0);
 	}
 }
 

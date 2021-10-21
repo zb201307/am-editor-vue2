@@ -4,13 +4,13 @@ import {
 	fontFamilyDefaultData,
 	fontfamily,
 } from './config';
-// import ToolbarPlugin, { ToolbarComponent } from './plugin';
+import ToolbarPlugin, { ToolbarComponent } from './plugin';
 
 
 export default Toolbar;
 export {
-	// ToolbarPlugin,
-	// ToolbarComponent,
+	ToolbarPlugin,
+	ToolbarComponent,
 	getToolbarDefaultConfig,
 	fontFamilyDefaultData,
 	fontfamily,

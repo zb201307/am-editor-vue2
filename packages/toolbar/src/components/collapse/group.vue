@@ -6,7 +6,7 @@
         :key="item.name"
         :engine="engine"
         v-bind="{...handleOmit(item, 'onClick')}"
-        @click="onClick"
+        :on-click="onClick"
         />
     </div>
 </template>
@@ -29,7 +29,7 @@ export default class AmCollapseGroup extends Vue {
   
     handleOmit = omit
 
-    onClick (event:MouseEvent, name:string){
+    onClick(event:MouseEvent, name:string){
         let result;
         const item = this.items.find(item => item.name === name)
         if (item?.onClick)
