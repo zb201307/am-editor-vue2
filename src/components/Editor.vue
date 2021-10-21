@@ -1,91 +1,171 @@
 <template>
-    <div class="amEditorVue2">
-        <am-loading :loading="loading">
-            <div :class="['editor-wrapper',{'editor-mobile': mobile}]">
-                <div class="editor-container">
-                    <div class="editor-content">
-                        <div ref="container"></div>
-                    </div>
-                </div>
-            </div>
-        </am-loading>
-    </div>
+  <div class="amEditorVue2">
+    <am-loading :loading="loading">
+      <am-toolbar v-if="engine" :engine="engine" :items="items" />
+      <div :class="['editor-wrapper', { 'editor-mobile': mobile }]">
+        <div class="editor-container">
+          <div class="editor-content">
+            <div ref="container"></div>
+          </div>
+        </div>
+      </div>
+    </am-loading>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Engine, { $, EngineInterface, isMobile } from "@aomao/engine"
-import { message, Modal } from 'ant-design-vue'
-import AmLoading from './Loading.vue'
-import { plugins, cards, pluginConfig } from './config'
+import Engine, { $, EngineInterface, isMobile } from "@aomao/engine";
+import { message, Modal } from "ant-design-vue";
+import AmLoading from "./Loading.vue";
+import AmToolbar from "../../packages/toolbar/src";
+import { plugins, cards, pluginConfig } from "./config";
+import { GroupItemProps } from "packages/toolbar/src/types";
 
 @Component({
-    components:{
-        AmLoading,
-    }
+  components: {
+    AmLoading,
+    AmToolbar,
+  },
 })
 export default class Editor extends Vue {
-    loading = true
-    engine?: EngineInterface
-    mobile = isMobile
+  loading = true;
+  engine?: EngineInterface | null = null;
+  mobile = isMobile;
+  items: GroupItemProps[] = [];
 
-    mounted(){
-        // 容器加载后实例化编辑器引擎
-        const container = this.$refs.container
-        if(container){
-            //实例化引擎
-            const engine = new Engine(container as Element,{
-                // 启用的插件
-                plugins,
-                // 启用的卡片
-                cards,
-                // 所有的卡片配置
-                config: pluginConfig,
-            });
-            // 设置显示成功消息UI，默认使用 console.log
-            engine.messageSuccess = (msg) => {
-                message.success(msg);
-            };
-            // 设置显示错误消息UI，默认使用 console.error
-            engine.messageError = (error) => {
-                message.error(error);
-            };
-            // 设置显示确认消息UI，默认无
-            engine.messageConfirm = (msg) => {
-                return new Promise<boolean>((resolve, reject) => {
-                    Modal.confirm({
-                        content: msg,
-                        onOk: () => resolve(true),
-                        onCancel: () => reject(),
-                    });
-                });
-            };
-            //卡片最大化时设置编辑页面样式
-            engine.on('card:maximize', () => {
-                $('.editor-toolbar').css('z-index', '9999').css('top', '55px');
-            });
-            engine.on('card:minimize', () => {
-                $('.editor-toolbar').css('z-index', '').css('top', '');
-            });
-            // 默认编辑器值，为了演示，这里初始化值写死，正式环境可以请求api加载
-            const value = '<strong>Hello</strong>,<span style="color:red">am-editor</span>'
-            // 非协同编辑，设置编辑器值，异步渲染后回调
-            engine.setValue(value, () => {
-                this.loading = false
-            })
-            
-            // 监听编辑器值改变事件
-            engine.on('change', value => {
-                console.log('value', value);
-                console.log('html:', engine.getHtml());
-            });
-            
-            this.engine = engine
-        }
+  mounted() {
+    this.items = isMobile
+      ? [
+          ["undo", "redo"],
+          {
+            icon: "text",
+            items: ["bold", "italic", "strikethrough", "underline", "moremark"],
+          },
+          [
+            {
+              type: "button",
+              name: "image-uploader",
+              icon: "image",
+            },
+            "link",
+            "tasklist",
+            "heading",
+          ],
+          {
+            icon: "more",
+            items: [
+              {
+                type: "button",
+                name: "video-uploader",
+                icon: "video",
+              },
+              {
+                type: "button",
+                name: "file-uploader",
+                icon: "attachment",
+              },
+              {
+                type: "button",
+                name: "table",
+                icon: "table",
+              },
+              {
+                type: "button",
+                name: "math",
+                icon: "math",
+              },
+              {
+                type: "button",
+                name: "codeblock",
+                icon: "codeblock",
+              },
+              {
+                type: "button",
+                name: "orderedlist",
+                icon: "orderedlist",
+              },
+              {
+                type: "button",
+                name: "unorderedlist",
+                icon: "unorderedlist",
+              },
+              {
+                type: "button",
+                name: "hr",
+                icon: "hr",
+              },
+            ],
+          },
+        ]
+      : [
+          ["collapse"],
+          ["undo", "redo", "paintformat", "removeformat"],
+          ["heading", "fontfamily", "fontsize"],
+          ["bold", "italic", "strikethrough", "underline", "moremark"],
+          ["fontcolor", "backcolor"],
+          ["alignment"],
+          ["unorderedlist", "orderedlist", "tasklist", "indent", "line-height"],
+          ["link", "quote", "hr"],
+        ];
+
+    // 容器加载后实例化编辑器引擎
+    const container = this.$refs.container;
+    if (container) {
+      //实例化引擎
+      const engine = new Engine(container as Element, {
+        // 启用的插件
+        plugins,
+        // 启用的卡片
+        cards,
+        // 所有的卡片配置
+        config: pluginConfig,
+      });
+      // 设置显示成功消息UI，默认使用 console.log
+      engine.messageSuccess = (msg) => {
+        message.success(msg);
+      };
+      // 设置显示错误消息UI，默认使用 console.error
+      engine.messageError = (error) => {
+        message.error(error);
+      };
+      // 设置显示确认消息UI，默认无
+      engine.messageConfirm = (msg) => {
+        return new Promise<boolean>((resolve, reject) => {
+          Modal.confirm({
+            content: msg,
+            onOk: () => resolve(true),
+            onCancel: () => reject(),
+          });
+        });
+      };
+      //卡片最大化时设置编辑页面样式
+      engine.on("card:maximize", () => {
+        $(".editor-toolbar").css("z-index", "9999").css("top", "55px");
+      });
+      engine.on("card:minimize", () => {
+        $(".editor-toolbar").css("z-index", "").css("top", "");
+      });
+      // 默认编辑器值，为了演示，这里初始化值写死，正式环境可以请求api加载
+      const value =
+        '<strong>Hello</strong>,<span style="color:red">am-editor</span>';
+      // 非协同编辑，设置编辑器值，异步渲染后回调
+      engine.setValue(value, () => {
+        this.loading = false;
+      });
+
+      // 监听编辑器值改变事件
+      engine.on("change", (value) => {
+        console.log("value", value);
+        console.log("html:", engine.getHtml());
+      });
+
+      this.engine = engine;
     }
-    onUnmounted(){
-        this.engine?.destroy()
-    }
+  }
+  onUnmounted() {
+    this.engine?.destroy();
+  }
 }
 </script>
 <style scoped lang="less">

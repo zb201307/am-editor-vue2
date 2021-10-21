@@ -1,7 +1,17 @@
-import Vue from './Test.vue'
-export default class Toolbar {
-    name: string = ""
-    render(){
-        console.log(32434, Vue)
-    }
-}
+import Toolbar from './components/toolbar.vue';
+import {
+	getToolbarDefaultConfig,
+	fontFamilyDefaultData,
+	fontfamily,
+} from './config';
+// import ToolbarPlugin, { ToolbarComponent } from './plugin';
+
+
+export default Toolbar;
+export {
+	// ToolbarPlugin,
+	// ToolbarComponent,
+	getToolbarDefaultConfig,
+	fontFamilyDefaultData,
+	fontfamily,
+};
