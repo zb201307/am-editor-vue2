@@ -43,6 +43,7 @@ import {
   ToolbarPlugin,
   ToolbarComponent,
 } from "../../packages/toolbar/src";
+import Link from "../../packages/link/src";
 
 const DOMAIN = "https://editor.yanmao.cc/api";
 
@@ -82,6 +83,7 @@ export const plugins: Array<PluginEntry> = [
   Status,
   LineHeight,
   Mention,
+  Link,
   ToolbarPlugin,
 ];
 
