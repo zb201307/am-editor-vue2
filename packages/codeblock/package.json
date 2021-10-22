@@ -1,6 +1,7 @@
 {
   "name": "am-editor-codeblock-vue2",
   "version": "1.0.1",
+  "keyword": "am-editor-codeblock-vue2",
   "description": "> TODO: description",
   "author": "zhangbin<bjzhang.bin@163.com> yanmao <me@yanmao.cc>",
   "homepage": "https://github.com/zb201307/am-editor-vue2#readme",
@@ -32,5 +33,6 @@
   "devDependencies": {
     "@types/codemirror": "^5.60.5",
     "@types/lodash-es": "^4.17.5"
-  }
+  },
+  "gitHead": "8a7dfc6d2898df28985a9fcfb1933905e23a1550"
 }

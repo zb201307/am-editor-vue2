@@ -5,6 +5,7 @@
   "keywords": [
     "toolbar"
   ],
+  "keyword": "am-editor-toolbar-vue2",
   "author": "zhangbin<bjzhang.bin@163.com> yanmao <me@yanmao.cc>",
   "homepage": "https://github.com/zb201307/am-editor-vue2#readme",
   "license": "MIT",
@@ -37,5 +38,6 @@
     "@types/keymaster": "^1.6.30",
     "@types/lodash-es": "^4.17.5",
     "@types/tinycolor2": "^1.4.3"
-  }
+  },
+  "gitHead": "8a7dfc6d2898df28985a9fcfb1933905e23a1550"
 }

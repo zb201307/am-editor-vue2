@@ -1,6 +1,7 @@
 {
   "name": "am-editor-link-vue2",
   "version": "1.0.1",
+  "keyword": "am-editor-link-vue2",
   "description": "> TODO: description",
   "author": "zhangbin<bjzhang.bin@163.com> yanmao <me@yanmao.cc>",
   "homepage": "https://github.com/zb201307/am-editor-vue2#readme",
@@ -26,5 +27,6 @@
     "@babel/runtime": "^7.13.10",
     "ant-design-vue": "^1.7.8",
     "vue": "^2.6.11"
-  }
+  },
+  "gitHead": "8a7dfc6d2898df28985a9fcfb1933905e23a1550"
 }

@@ -1,9 +1,10 @@
 {
   "name": "am-editor-vue2",
   "version": "1.0.0",
+  "keyword": "editor-vue2",
   "description": "A Vue.js project",
   "author": "张彬 <bjzhang.bin@163.com>",
-  "private": true,
+  "private": false,
   "license": "MIT",
   "workspaces": [
     "packages/*"
