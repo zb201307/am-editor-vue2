@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "张彬 <bjzhang.bin@163.com>",
-  "private": false,
+  "private": true,
   "license": "MIT",
   "workspaces": [
     "packages/*"
@@ -12,7 +12,7 @@
     "serve": "vue-cli-service serve",
     "docs:build": "vue-cli-service build",
     "build": "node ./scripts/build",
-    "publish": "yarn build & lerna publish",
+    "lerna-publish": "yarn build & lerna publish",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

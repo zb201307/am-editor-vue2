@@ -1,14 +1,10 @@
-15 error Error: Command failed with exit code 1: git remote update
-15 error kex_exchange_identification: read: Connection reset by peer
-15 error fatal: Could not read from remote repository.
-15 error
-15 error Please make sure you have the correct access rights
-15 error and the repository exists.
-15 error error: Could not fetch origin
-15 error Fetching origin
-15 error     at makeError (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/child-process/node_modules/execa/lib/error.js:60:11)
-15 error     at Function.module.exports.sync (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/child-process/node_modules/execa/index.js:194:17)
-15 error     at Object.execSync (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/child-process/index.js:39:16)
-15 error     at updateRemote (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/version/lib/is-behind-upstream.js:34:16)
-15 error     at isBehindUpstream (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/version/lib/is-behind-upstream.js:16:3)
-15 error     at VersionCommand.initialize (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/version/index.js:153:9)
+17 error Error: Command failed with exit code 1: git remote update
+17 error fatal: unable to access 'https://github.com/zb201307/am-editor-vue2.git/': OpenSSL SSL_read: Connection was reset, errno 10054
+17 error error: Could not fetch origin
+17 error Fetching origin
+17 error     at makeError (C:\Users\YiYang\Documents\Projects\Javascript\am-editor-vue2\node_modules\@lerna\child-process\node_modules\execa\lib\error.js:60:11)
+17 error     at Function.module.exports.sync (C:\Users\YiYang\Documents\Projects\Javascript\am-editor-vue2\node_modules\@lerna\child-process\node_modules\execa\index.js:194:17)
+17 error     at Object.execSync (C:\Users\YiYang\Documents\Projects\Javascript\am-editor-vue2\node_modules\@lerna\child-process\index.js:39:16)
+17 error     at updateRemote (C:\Users\YiYang\Documents\Projects\Javascript\am-editor-vue2\node_modules\@lerna\version\lib\is-behind-upstream.js:34:16)
+17 error     at isBehindUpstream (C:\Users\YiYang\Documents\Projects\Javascript\am-editor-vue2\node_modules\@lerna\version\lib\is-behind-upstream.js:16:3)
+17 error     at VersionCommand.initialize (C:\Users\YiYang\Documents\Projects\Javascript\am-editor-vue2\node_modules\@lerna\version\index.js:153:9)
