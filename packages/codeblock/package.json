@@ -34,5 +34,5 @@
     "@types/codemirror": "^5.60.5",
     "@types/lodash-es": "^4.17.5"
   },
-  "gitHead": "8a7dfc6d2898df28985a9fcfb1933905e23a1550"
+  "gitHead": "231a7f711d133f646c9bb70f83953a598679c2ef"
 }
