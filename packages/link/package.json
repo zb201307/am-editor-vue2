@@ -1,13 +1,14 @@
 {
-  "name": "link-vue2",
+  "name": "am-editor-link-vue2",
   "version": "1.0.0",
   "description": "> TODO: description",
-  "author": "yanmao <me@yanmao.cc>",
+  "author": "zhangbin<bjzhang.bin@163.com> yanmao <me@yanmao.cc>",
   "homepage": "https://github.com/zb201307/am-editor-vue2#readme",
   "license": "MIT",
   "main": "dist/index.ts",
   "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
+  "private":false,
   "files": [
     "dist",
     "lib",
