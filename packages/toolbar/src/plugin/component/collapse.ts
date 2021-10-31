@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Keymaster, { deleteScope, setScope, unbind } from 'keymaster';
 import { $, EngineInterface, NodeInterface, Position } from '@aomao/engine';
 import Collapse from '../../components/collapse/collapse.vue';
-import { CollapseGroupProps, CollapseProps } from '../../types';
+import { CollapseGroupProps } from '../../types';
 
 export type Options = {
 	onCancel?: () => void;

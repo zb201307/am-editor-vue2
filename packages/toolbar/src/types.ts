@@ -214,7 +214,7 @@ export type GroupProps = {
 	items?: (GroupButtonProps
         | GroupDropdownProps
         | GroupColorProps
-        | ToolbarCollapseGroupProps)[]
+        | ToolbarCollapseGroupProps | string)[]
 	icon?: string
 	content: string | (() => string) | VNode
 };
@@ -254,7 +254,7 @@ export type GroupItemProps =
 					groups: Array<
 						Omit<CollapseGroupProps, 'items'> & {
 							items: Array<
-								Omit<CollapseItemProps, 'engine'> | 'string'
+							string | Omit<CollapseItemProps, 'engine'>
 							>;
 						}
 					>;

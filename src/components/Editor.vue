@@ -10,6 +10,12 @@
         </div>
       </div>
     </am-loading>
+    <map-modal
+      v-if="engine"
+      :engine="engine"
+      :visible="mapModalVisible"
+      :onVisibleChange="handleMapModalVisibleChange"
+    />
   </div>
 </template>
 
@@ -21,11 +27,13 @@ import AmLoading from "./Loading.vue";
 import AmToolbar from "../../packages/toolbar/src";
 import { plugins, cards, pluginConfig } from "./config";
 import { GroupItemProps } from "packages/toolbar/src/types";
+import MapModal from "./Map/Modal.vue";
 
 @Component({
   components: {
     AmLoading,
     AmToolbar,
+    MapModal,
   },
 })
 export default class Editor extends Vue {
@@ -33,6 +41,11 @@ export default class Editor extends Vue {
   engine?: EngineInterface | null = null;
   mobile = isMobile;
   items: GroupItemProps[] = [];
+  mapModalVisible = false;
+
+  handleMapModalVisibleChange(visible: boolean) {
+    this.mapModalVisible = visible;
+  }
 
   mounted() {
     this.items = isMobile
@@ -99,7 +112,33 @@ export default class Editor extends Vue {
           },
         ]
       : [
-          ["collapse"],
+          [
+            {
+              type: "collapse",
+              groups: [
+                {
+                  items: [
+                    "image-uploader",
+                    "codeblock",
+                    "table",
+                    "file-uploader",
+                    "video-uploader",
+                    "math",
+                    "status",
+                    {
+                      name: "map",
+                      icon: "<span>地图</span>",
+                      search: "地图,map",
+                      autoExecute: false,
+                      onClick: () => {
+                        this.mapModalVisible = true;
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
           ["undo", "redo", "paintformat", "removeformat"],
           ["heading", "fontfamily", "fontsize"],
           ["bold", "italic", "strikethrough", "underline", "moremark"],
