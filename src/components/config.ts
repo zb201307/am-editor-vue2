@@ -46,8 +46,9 @@ import {
 import Link from "../../packages/link/src";
 import CodeBlock, { CodeBlockComponent } from "../../packages/codeblock/src";
 import MapPlugin, { MapComponent } from "../../packages/map/src";
+import Audio, { AudioComponent, AudioUploader } from "../../packages/audio/src";
 
-const DOMAIN = "https://editor.yanmao.cc/api";
+const DOMAIN = "http://localhost:7001";
 
 export const plugins: Array<PluginEntry> = [
   Redo,
@@ -89,6 +90,8 @@ export const plugins: Array<PluginEntry> = [
   CodeBlock,
   ToolbarPlugin,
   MapPlugin,
+  Audio,
+  AudioUploader,
 ];
 
 export const cards: Array<CardEntry> = [
@@ -104,6 +107,7 @@ export const cards: Array<CardEntry> = [
   CodeBlockComponent,
   ToolbarComponent,
   MapComponent,
+  AudioComponent,
 ];
 let engine: EngineInterface | null = null;
 
@@ -142,6 +146,10 @@ export const pluginConfig: { [key: string]: PluginOptions } = {
     onBeforeRender: (status: string, url: string) => {
       return url + `?token=12323`;
     },
+  },
+  [AudioUploader.pluginName]: {
+    action: `${DOMAIN}/upload/video`,
+    limitSize: 1024 * 1024 * 50,
   },
   [Math.pluginName]: {
     action: `https://g.yanmao.cc/latex`,

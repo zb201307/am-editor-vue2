@@ -24,7 +24,11 @@
   },
   "dependencies": {
     "@aomao/engine": "^2.6.4",
-    "@babel/runtime": "^7.13.10"
+    "@babel/runtime": "^7.13.10",
+    "autosize": "^5.0.1"
   },
-  "gitHead": "a6756846878acb2186b28b5f7e328f0b4f6db378"
+  "gitHead": "a6756846878acb2186b28b5f7e328f0b4f6db378",
+  "devDependencies": {
+    "@types/autosize": "^4.0.0"
+  }
 }

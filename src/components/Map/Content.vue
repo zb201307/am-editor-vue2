@@ -2,7 +2,13 @@
   <am-loading :loading="loading">
     <div class="container">
       <div class="header">
-        <search v-model="value" @pressEnter="handleSearch" />
+        <search
+          v-model="value"
+          @search="handleSearch"
+          size="large"
+          placeholder="请输入您的位置查询"
+          enter-button
+        />
       </div>
       <div class="body">
         <div class="list">

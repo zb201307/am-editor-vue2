@@ -2,6 +2,8 @@
   <modal
     :visible="visible"
     title="插入位置"
+    ok-text="确认"
+    cancel-text="取消"
     :ok-button-props="{ props: { disabled: item === null } }"
     @ok="handleOk"
     @cancel="handleClose"

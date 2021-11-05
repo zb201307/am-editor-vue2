@@ -22,6 +22,19 @@
         font-size: 17px;
         line-height: 1.3;
         padding: 0px 4px;
+
+        textarea {
+            background: transparent;
+            border: none;
+            width: 100%;
+            resize: none;
+            line-height: 28px;
+            height: 28px;
+
+            &:focus {
+                outline: none;
+            }
+        }
     }
 
     .address {
@@ -34,6 +47,18 @@
 
     .img img {
         width: 100%;
+    }
+}
+
+.map-container-inline {
+    a {
+        span {
+
+            &:first-child {
+                position: relative;
+                top: 2px;
+            }
+        }
     }
 }
 
