@@ -74,7 +74,7 @@ export default class extends Plugin<Options> {
 	markdown(event: KeyboardEvent) {
 		if (!isEngine(this.editor) || this.options.markdown === false) return;
 		const { change, node, command } = this.editor;
-		const range = change.getRange();
+		const range = change.range.get();
 
 		if (!range.collapsed || change.isComposing() || !this.markdown) return;
 		const blockApi = this.editor.block;

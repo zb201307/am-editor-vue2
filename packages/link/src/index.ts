@@ -76,7 +76,7 @@ export default class extends InlinePlugin<Options> {
 			} else {
 				inline.wrap(inlineNode);
 			}
-			const range = change.getRange();
+			const range = change.range.get();
 			if (!range.collapsed && change.inlines.length > 0) {
 				this.toolbar?.show(change.inlines[0]);
 			}
@@ -91,7 +91,7 @@ export default class extends InlinePlugin<Options> {
 	query() {
 		if (!isEngine(this.editor)) return;
 		const { change, inline } = this.editor;
-		const range = change.getRange();
+		const range = change.range.get();
 		const inlineNode = inline
 			.findInlines(range)
 			.find((node) => this.isSelf(node));

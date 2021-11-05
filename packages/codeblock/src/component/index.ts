@@ -1,7 +1,7 @@
 import type { Editor } from 'codemirror';
 import {
 	$,
-	ActiveTrigger,
+	CardActiveTrigger,
 	Card,
 	CardToolbarItemOptions,
 	CardType,
@@ -71,7 +71,7 @@ class CodeBlcok extends Card<CodeBlockValue> {
 					setTimeout(() => {
 						this.editor.card.activate(
 							this.root,
-							ActiveTrigger.MOUSE_DOWN,
+							CardActiveTrigger.MOUSE_DOWN,
 						);
 					}, 10);
 			},

@@ -720,7 +720,7 @@ export const getToolbarDefaultConfig = (
 			title: language['link']['title'],
 			onDisabled: () => {
 				const { change, card } = engine;
-				const range = change.getRange();
+				const range = change.range.get();
 				const cardComponent = card.find(range.startNode);
 				return (
 					(!!cardComponent &&

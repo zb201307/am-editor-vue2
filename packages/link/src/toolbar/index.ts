@@ -63,11 +63,11 @@ class Toolbar {
 	private async onOk(text: string, link: string) {
 		if (!this.target) return;
 		const { change } = this.engine;
-		const range = change.getRange();
+		const range = change.range.get();
 		if (!change.rangePathBeforeCommand) {
 			if (!range.startNode.inEditor()) {
 				range.select(this.target, true);
-				change.select(range);
+				change.range.select(range);
 			}
 			change.cacheRangeBeforeCommand();
 		}
@@ -163,10 +163,10 @@ class Toolbar {
 						},
 						onRemove: () => {
 							if (!this.target) return;
-							const range = change.getRange();
+							const range = change.range.get();
 							range.select(this.target, true);
 							inline.repairRange(range);
-							change.select(range);
+							change.range.select(range);
 							change.cacheRangeBeforeCommand();
 							inline.unwrap();
 							this.mouseInContainer = false;
@@ -225,9 +225,9 @@ class Toolbar {
 			this.root = undefined;
 			if (this.target && !this.target.attributes('href')) {
 				const { change, inline } = this.engine;
-				const range = change.getRange();
+				const range = change.range.get();
 				range.select(this.target, true);
-				change.select(range);
+				change.range.select(range);
 				inline.unwrap();
 			}
 			if (clearTarget !== false) this.target = undefined;
