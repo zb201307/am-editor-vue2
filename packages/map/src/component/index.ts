@@ -1,4 +1,4 @@
-import { $, Card, CardToolbarItemOptions, CardType, CardValue, isEngine, isMobile, ToolbarItemOptions } from '@aomao/engine'
+import { $, Card, CardToolbarItemOptions, CardType, CardValue, isEngine, isMobile, NodeInterface, ToolbarItemOptions } from '@aomao/engine'
 import autosize from 'autosize'
 import './index.less'
 
@@ -32,6 +32,8 @@ class MapComponent extends Card<MapValue> {
 	static get singleSelectable(){
 		return false
 	}
+
+	#container?: NodeInterface
 
     toolbar(): Array<CardToolbarItemOptions | ToolbarItemOptions> {
 		if (!isEngine(this.editor) || this.editor.readonly) return [];
@@ -81,7 +83,8 @@ class MapComponent extends Card<MapValue> {
 				title: textarea.get<HTMLTextAreaElement>()?.value
 			})
 		})
-        return container
+		this.#container = container
+        return this.#container
     }
 
     didRender(){
@@ -89,6 +92,14 @@ class MapComponent extends Card<MapValue> {
         if(this.type === CardType.BLOCK) this.toolbarModel?.setOffset([-120,0])
         else this.toolbarModel?.setOffset([0,0])
     }
+
+	destroy(){
+		const textarea = this.#container?.find('textarea')
+		if(textarea) {
+			autosize.destroy(textarea.get<HTMLTextAreaElement>()!)
+		}
+		super.destroy()
+	}
 }
 
 export default MapComponent
