@@ -127,11 +127,11 @@ export const pluginConfig: { [key: string]: PluginOptions } = {
   },
   [ImageUploader.pluginName]: {
     file: {
-      action: `${DOMAIN}/upload/image`,
+      action: `${DOMAIN}/upload/image`, //图片上传
       headers: { Authorization: 213434 },
     },
     remote: {
-      action: `${DOMAIN}/upload/image`,
+      action: `${DOMAIN}/upload/image`, //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
     },
     isRemote: (src: string) => src.indexOf(DOMAIN) < 0,
   },
