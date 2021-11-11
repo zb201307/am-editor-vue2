@@ -24,7 +24,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Select } from 'ant-design-vue'
 const ASelectOption = Select.Option
-
+Vue.use(Select)
+Vue.use(ASelectOption)
 @Component({
     components: {
         'a-select': Select,
