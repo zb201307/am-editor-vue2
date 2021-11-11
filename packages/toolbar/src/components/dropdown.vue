@@ -13,6 +13,7 @@
         >
             <am-button
             :name="name"
+            
             :title="title"
             :active="visible"
             :disabled="disabled"
