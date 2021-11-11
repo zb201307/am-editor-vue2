@@ -109,7 +109,7 @@ export default class AudioPlugin extends Plugin<{
 				timeout();
 			});
 		};
-		return new Promise(async (resolve, reject) => {
+		return new Promise((resolve, reject) => {
 			const component = find();
 			const wait = (component: CardInterface) => {
 				waitCheck(component)

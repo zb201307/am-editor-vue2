@@ -1,6 +1,8 @@
 const { rollup, watch } = require('rollup');
 const signale = require('signale');
 const vue = require('rollup-plugin-vue');
+const tsconfig = require('../tsconfig.json')
+const typescript2 = require("rollup-plugin-typescript2");
 const getRollupConfig = require('father-build/lib/getRollupConfig').default;
 const normalizeBundleOpts = require('father-build/lib/normalizeBundleOpts').default;
 
@@ -16,9 +18,22 @@ async function build(entry, opts) {
   });
   rollupConfigs.forEach(config => {
     const { plugins } = config
+    plugins.splice(plugins.findIndex(p => p.name === 'rpt2'), 1)
     const index = plugins.findIndex(p => p.name === 'postcss')
-    if(index < plugins.length) plugins.splice(index, 0, vue({ preprocessStyles: true }))
-    else plugins.push(vue({ preprocessStyles: true }))
+    if(index < plugins.length) plugins.splice(index, 0, typescript2({
+      tsconfigOverride: {
+        compilerOptions: {
+          declaration: true,
+        },
+        tsconfig: tsconfig
+      }
+    }),vue({ 
+      typescript: tsconfig }))
+    else plugins.push(typescript2({tsconfigOverride: {
+			compilerOptions: {
+				declaration: true,
+			}
+		}}),vue({ preprocessStyles: true }))
   })
   for (const rollupConfig of rollupConfigs) {
     if (opts.watch) {

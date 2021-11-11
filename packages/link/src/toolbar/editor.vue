@@ -36,7 +36,9 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { LanguageInterface } from '@aomao/engine'
 import { ConfigProvider, Input, Button } from 'ant-design-vue';
-
+Vue.use(Input)
+Vue.use(ConfigProvider)
+Vue.use(Button)
 @Component({
     components: {
         'a-config-provider': ConfigProvider,

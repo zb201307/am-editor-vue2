@@ -8,6 +8,8 @@
 # install dependencies
 yarn
 
+lerna bootstrap
+
 # serve with hot reload at localhost:8080
 yarn serve
 
