@@ -1,7 +1,6 @@
 <template>
     <a-select
     :show-search="true"
-    
     size="small"
     :bordered="false"
     style="min-width: 128px"
