@@ -69,6 +69,7 @@ class MapComponent extends Card<MapValue> {
 
     render(){
         const value = this.getValue()
+		
         const container = this.type === CardType.BLOCK ? $(`<div class="map-container">
             <div  class="title"><textarea>${value?.title}</textarea></div>
             <div class="address">${value?.address}</div>

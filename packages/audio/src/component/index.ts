@@ -190,6 +190,7 @@ class AudioComponent extends Card<AudioValue> {
 		if (!value) return items;
 		const { status, download } = value;
 		const locale = this.getLocales();
+		
 		if (status === 'done') {
 			if (download) {
 				items.push({
