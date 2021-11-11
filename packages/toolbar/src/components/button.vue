@@ -107,7 +107,7 @@ export default class Button extends Vue {
     }
 }
 </script>
-<style css>
+<style>
 .editor-toolbar .toolbar-button {
     display: inline-flex;
     align-items: center;
