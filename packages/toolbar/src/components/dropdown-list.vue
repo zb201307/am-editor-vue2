@@ -2,12 +2,12 @@
     <div
     :class="['toolbar-dropdown-list',`toolbar-dropdown-${direction || 'vertical'}`,{'toolbar-dropdown-dot': hasDot !== false},className]"
     >
-        <a-tooltip v-for="{ key , placement , title , hotkey , direction , hasDot , content , className , icon, disabled } in items" :key="key" :placement="placement || 'right'" 
-        :overlayStyle="(!!title || !!hotkey) && !isMobile ? {} : {display:'none'}"
+        <a-tooltip v-for="{ key , placement , title, direction , hasDot , content , className , icon, disabled } in items" :key="key" :placement="placement || 'right'" 
+        :overlayStyle="(!!title || !!hotkeys[key]) && !isMobile ? {} : {display:'none'}"
         >
             <template #title>
                 <div v-if="!!title" class="toolbar-tooltip-title">{{title}}</div>
-                <div v-if="!!hotkey" class="toolbar-tooltip-hotkey" v-html="hotkey"></div>
+                <div v-if="!!hotkeys[key]" class="toolbar-tooltip-hotkey" v-html="hotkeys[key]"></div>
             </template>
             <a 
             :class="['toolbar-dropdown-list-item',className, {'toolbar-dropdown-list-item-disabled': disabled}]"
@@ -43,16 +43,17 @@ export default class DropdownList extends Vue {
     @Prop(Function) onSelect?: (event: MouseEvent, key: string) => void | boolean
     @Prop({ type: [Boolean, Object], default: undefined}) hasDot?: boolean
     
-    hotkeys?: { [x: string]: string|boolean|undefined; }[];
+    hotkeys: { [x: string]: string|boolean|undefined; } = {};
     isMobile = false
     getHotkey(item:DropdownListItem){
-        const { command } = item
+        const { command, key } = item
         let { hotkey } = item
         //默认获取插件的热键
         if (this.engine && (hotkey === true || hotkey === undefined)) {
             hotkey = autoGetHotkey(
                 this.engine,
                 command && !Array.isArray(command) ? command.name : this.name,
+                key
             );
         }
         if (typeof hotkey === 'string' && hotkey !== '') {
@@ -62,8 +63,8 @@ export default class DropdownList extends Vue {
     }
 
     mounted(){
-        this.hotkeys = this.items.map(item => {   
-            return {[item.key]: this.getHotkey(item)}
+        this.items.forEach(item => {   
+            this.hotkeys[item.key] = this.getHotkey(item)
         })
         this.isMobile = isMobile
     }
