@@ -97,7 +97,7 @@ export default class extends InlinePlugin<Options> {
 			.find((node) => this.isSelf(node));
 		this.toolbar?.hide(inlineNode);
 		if (inlineNode && !inlineNode.isCard()) {
-			if (range.collapsed) this.toolbar?.show(inlineNode);
+			this.toolbar?.show(inlineNode);
 			return true;
 		}
 		return false;
