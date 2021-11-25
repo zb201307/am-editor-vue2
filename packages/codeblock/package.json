@@ -23,12 +23,12 @@
     "url": "https://github.com/zb201307/am-editor-vue2/issues"
   },
   "dependencies": {
-    "@aomao/engine": "^2.6.11",
+    "@aomao/engine": "^2.6.14",
     "@babel/runtime": "^7.13.10",
     "ant-design-vue": "^1.7.8",
     "codemirror": "^5.63.3",
     "lodash-es": "^4.17.21",
-    "vue": "^2.6.11"
+    "vue": "^2.6.14"
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.5",

@@ -12,6 +12,8 @@ import {
 	unescape,
 	CARD_TYPE_KEY,
 	PluginOptions,
+	READY_CARD_KEY,
+	decodeCardValue,
 } from '@aomao/engine';
 import CodeBlockComponent, { CodeBlockEditor } from './component';
 
@@ -298,11 +300,11 @@ export default class extends Plugin<Options> {
 	parseHtml(root: NodeInterface) {
 		if (isServer) return;
 
-		root.find(`[${CARD_KEY}=${CodeBlockComponent.cardName}`).each(
+		root.find(`[${CARD_KEY}="${CodeBlockComponent.cardName}"],[${READY_CARD_KEY}="${CodeBlockComponent.cardName}"]`).each(
 			(cardNode) => {
 				const node = $(cardNode);
 				const card = this.editor.card.find(node) as CodeBlockComponent;
-				const value = card?.getValue();
+				const value = card?.getValue() || decodeCardValue(node.attributes(CARD_VALUE_KEY));
 				if (value && value.code) {
 					node.empty();
 					const synatxMap: { [key: string]: string } = {};
