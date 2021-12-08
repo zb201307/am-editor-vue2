@@ -50,6 +50,7 @@ export default class extends InlinePlugin<Options> {
 				onConfirm: this.options.onConfirm,
 			});
 		}
+		editor.on('paste:each', (child) => this.pasteHtml(child));
 		editor.on('paser:html', (node) => this.parseHtml(node));
 		editor.on('select', () => {
 			this.query();
@@ -90,15 +91,21 @@ export default class extends InlinePlugin<Options> {
 
 	query() {
 		if (!isEngine(this.editor)) return;
-		const { change, inline } = this.editor;
-		const range = change.range.get();
-		const inlineNode = inline
-			.findInlines(range)
-			.find((node) => this.isSelf(node));
+		const { change } = this.editor;
+		const inlineNode = change.inlines.find((node) => this.isSelf(node));
 		this.toolbar?.hide(inlineNode);
-		if (inlineNode && !inlineNode.isCard()) {
-			this.toolbar?.show(inlineNode);
-			return true;
+		if (inlineNode && inlineNode.length > 0 && !inlineNode.isCard()) {
+			const range = change.range.get();
+			if (
+				range.collapsed ||
+				(inlineNode.contains(range.startNode) &&
+					inlineNode.contains(range.endNode))
+			) {
+				this.toolbar?.show(inlineNode);
+				return true;
+			} else {
+				this.toolbar?.hide();
+			}
 		}
 		return false;
 	}
@@ -201,5 +208,23 @@ export default class extends InlinePlugin<Options> {
 			'overflow-wrap': 'break-word',
 			'text-indent': '0',
 		});
+	}
+
+	pasteHtml(child: NodeInterface) {
+		if (child.isText()) {
+			const text = child.text();
+			const { node, inline } = this.editor;
+			if (
+				/^https?:\/\/\S+$/.test(text.toLowerCase().trim()) &&
+				inline.closest(child)
+			) {
+				node.wrap(
+					child,
+					$(`<${this.tagName} target="_blank" href="${text}"></a>`),
+				);
+				return false;
+			}
+		}
+		return true;
 	}
 }
