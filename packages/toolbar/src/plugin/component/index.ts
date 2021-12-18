@@ -23,6 +23,7 @@ class ToolbarComponent extends Card<{ data: Data }> {
 	private placeholder?: NodeInterface;
 	private component?: CollapseComponentInterface;
 	#collapseData?: Data;
+	#data?: any;
 
 	static get cardName() {
 		return 'toolbar';
@@ -54,6 +55,10 @@ class ToolbarComponent extends Card<{ data: Data }> {
 			},
 		});
 	}
+	
+	setData(_data: any) {
+		this.#data = _data;
+	}
 
 	getData(): Data {
 		if (!isEngine(this.editor)) {
@@ -74,9 +79,8 @@ class ToolbarComponent extends Card<{ data: Data }> {
 			collapseItems.push(...group.items);
 		});
 		const value = this.getValue();
-		if (!value || !value.data) return [];
 
-		value.data.forEach((group: any) => {
+		(this.#data || (value ? value['data'] : []) || []).forEach((group: any) => {
 			const title = group.title;
 			const items: Array<Omit<CollapseItemProps, 'engine'>> = [];
 			group.items.forEach((item: any) => {
@@ -203,7 +207,8 @@ class ToolbarComponent extends Card<{ data: Data }> {
 		else this.placeholder?.hide();
 	}
 
-	render(): string | void | NodeInterface {
+	render(data?: any): string | void | NodeInterface {
+		this.#data = data;
 		const editor = this.editor;
 		if (!isEngine(editor) || isServer) return;
 		const language = editor.language.get<{ placeholder: string }>(
