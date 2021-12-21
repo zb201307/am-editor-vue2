@@ -172,7 +172,7 @@ export default class Toolbar extends Vue {
                 if (customItem) {
                     if (customItem.type === 'button') {
                         if (customItem.onActive)
-                            customItem.active = customItem.onActive();
+                            customItem.active  = customItem.onActive();
                         else if (this.engine.command.queryEnabled(customItem.name))
                             customItem.active = this.engine.command.queryState(
                                 customItem.name,
