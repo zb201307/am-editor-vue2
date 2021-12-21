@@ -85,7 +85,7 @@ class MapComponent extends Card<MapValue> {
 			})
 		})
 		this.#container = container
-        return this.#container
+        return  this.#container
     }
 
     didRender(){

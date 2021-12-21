@@ -78,7 +78,7 @@ export default class AudioPlugin extends Plugin<{
 		};
 		// 找到不合格的组件
 		const find = (): CardInterface | undefined => {
-			return card.components.find(check);
+			return  card.components.find(check);
 		};
 		const waitCheck = (component: CardInterface): Promise<void> => {
 			let time = 60000;

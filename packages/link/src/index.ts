@@ -35,7 +35,7 @@ export default class extends InlinePlugin<Options> {
 		},
 	};
 
-	tagName = 'a';
+	tagName =  'a';
 
 	markdown =
 		this.options.markdown === undefined
