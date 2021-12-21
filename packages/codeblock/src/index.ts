@@ -72,7 +72,7 @@ export default class extends Plugin<Options> {
 	}
 
 	hotkey() {
-		return this.options.hotkey || '';
+		return this.options.hotkey ||  '';
 	}
 
 	markdown(event: KeyboardEvent) {
