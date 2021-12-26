@@ -13,11 +13,11 @@ import {
 import MapComponent, { MapValue } from './component';
 import locales from './locales';
 
-export interface Options extends PluginOptions {
+export interface MapOptions extends PluginOptions {
 	hotkey?: string | Array<string>;
 }
 
-export default class extends Plugin<Options> {
+export default class<T extends MapOptions = MapOptions> extends Plugin<T> {
 	static get pluginName() {
 		return 'map';
 	}
@@ -103,4 +103,4 @@ export default class extends Plugin<Options> {
 		});
 	}
 }
-export { MapComponent };
+export { MapComponent, MapValue };

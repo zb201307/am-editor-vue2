@@ -1,4 +1,4 @@
-import { Tooltip } from '@aomao/engine';
+import { CardValue, Tooltip } from '@aomao/engine';
 import {
 	$,
 	Card,
@@ -14,7 +14,7 @@ import {
 } from '@aomao/engine';
 import './index.css';
 
-export type AudioValue = {
+export interface AudioValue extends CardValue {
 	/**
 	 * 音频唯一标识
 	 */
@@ -51,7 +51,7 @@ export type AudioValue = {
 	message?: string;
 };
 
-class AudioComponent extends Card<AudioValue> {
+class AudioComponent<V extends AudioValue = AudioValue> extends Card<V> {
 	static get cardName() {
 		return 'audio';
 	}
@@ -350,7 +350,7 @@ class AudioComponent extends Card<AudioValue> {
 					download?: string;
 					status?: string;
 				}) => {
-					const newValue: AudioValue = {
+					const newValue: V = {
 						...value,
 						url: data?.url ? data.url : value.url,
 						name: data?.name ? data.name : value.name,
@@ -366,7 +366,7 @@ class AudioComponent extends Card<AudioValue> {
 					this.initPlayer();
 				},
 				(error: string) => {
-					const newValue: AudioValue = {
+					const newValue: V = {
 						...value,
 						status: 'error',
 						message: error || locales['loadError'],

@@ -9,6 +9,7 @@ import {
 	NodeInterface,
 	Plugin,
 	PluginEntry,
+	PluginOptions,
 	sanitizeUrl,
 	SchemaInterface,
 } from '@aomao/engine';
@@ -16,12 +17,13 @@ import AudioComponent, { AudioValue } from './component';
 import AudioUploader from './uploader';
 import locales from './locales';
 
-export default class AudioPlugin extends Plugin<{
+export interface AudioOptions extends PluginOptions {
 	onBeforeRender?: (
 		action: 'download' | 'query' | 'cover',
 		url: string,
 	) => string;
-}> {
+}
+export default class AudioPlugin<T extends AudioOptions = AudioOptions> extends Plugin<T> {
 	static get pluginName() {
 		return 'audio';
 	}
@@ -73,7 +75,7 @@ export default class AudioPlugin extends Plugin<{
 				component.root.inEditor() &&
 				(component.constructor as CardEntry).cardName ===
 					AudioComponent.cardName &&
-				(component as AudioComponent).getValue()?.status === 'uploading'
+				(component as AudioComponent<AudioValue>).getValue()?.status === 'uploading'
 			);
 		};
 		// 找到不合格的组件
@@ -163,7 +165,7 @@ export default class AudioPlugin extends Plugin<{
 		root.find(`[${CARD_KEY}=${AudioComponent.cardName}`).each(
 			(cardNode) => {
 				const node = $(cardNode);
-				const card = this.editor.card.find(node) as AudioComponent;
+				const card = this.editor.card.find<AudioValue>(node);
 				const value = card?.getValue();
 				if (value?.url && value.status === 'done') {
 					const { onBeforeRender } = this.options;

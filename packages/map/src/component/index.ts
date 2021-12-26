@@ -15,7 +15,7 @@ export interface MapValue extends CardValue {
     }
 }
 
-class MapComponent extends Card<MapValue> {
+class MapComponent<V extends MapValue = MapValue> extends Card<V> {
     
     static get cardName () {
         return 'map'
@@ -82,7 +82,7 @@ class MapComponent extends Card<MapValue> {
 		textarea.on('input', () => {
 			this.setValue({
 				title: textarea.get<HTMLTextAreaElement>()?.value
-			})
+			} as V)
 		})
 		this.#container = container
         return  this.#container
