@@ -12,7 +12,7 @@ import {
 	encodeCardValue,
 } from '@aomao/engine';
 
-import AudioComponent from './component';
+import AudioComponent, { AudioValue } from './component';
 
 export interface Options extends PluginOptions {
 	/**
@@ -64,7 +64,7 @@ export interface Options extends PluginOptions {
 			| {
 					url: string;
 					id?: string;
-					status?: string;
+					status?: 'uploading' | 'transcoding' | 'done' | 'error';
 			  }
 			| string;
 	};
@@ -187,7 +187,7 @@ export default class extends Plugin<Options> {
 						this.cardComponents[fileInfo.uid]
 					)
 						return;
-					const component = card.insert('audio', {
+					const component = card.insert<AudioValue>('audio', {
 						status: 'uploading',
 						name: fileInfo.name,
 						size: fileInfo.size,
@@ -212,7 +212,7 @@ export default class extends Plugin<Options> {
 					const download: string =
 						response.download ||
 						(response.data && response.data.download);
-					let status: string =
+					let status: 'uploading' | 'transcoding' | 'done' | 'error' =
 						response.status ||
 						(response.data && response.data.status);
 					status = status === 'transcoding' ? 'transcoding' : 'done';
@@ -224,7 +224,7 @@ export default class extends Plugin<Options> {
 									audio_id?: string;
 									cover?: string;
 									download?: string;
-									status?: string;
+									status?: 'uploading' | 'transcoding' | 'done' | 'error';
 							  }
 							| string;
 					} = {
@@ -245,7 +245,7 @@ export default class extends Plugin<Options> {
 								audio_id?: string;
 								cover?: string;
 								download?: string;
-								status?: string;
+								status?: 'uploading' | 'transcoding' | 'done' | 'error';
 							};
 							if (typeof customizeResult.data === 'string')
 								result.data = {
@@ -277,11 +277,11 @@ export default class extends Plugin<Options> {
 					}
 					//失败
 					if (!result.result) {
-						card.update(component.id, {
+						card.update<AudioValue>(component.id, {
 							status: 'error',
 							message:
-								result.data ||
-								this.editor.language.get(
+								result.data as string ||
+								this.editor.language.get<string>(
 									'audio',
 									'uploadError',
 								),
@@ -289,7 +289,7 @@ export default class extends Plugin<Options> {
 					}
 					//成功
 					else {
-						this.editor.card.update(
+						this.editor.card.update<AudioValue>(
 							component.id,
 							typeof result.data === 'string'
 								? { url: result.data }
@@ -303,11 +303,11 @@ export default class extends Plugin<Options> {
 				onError: (error, file) => {
 					const component = this.cardComponents[file.uid || ''];
 					if (!component) return;
-					card.update(component.id, {
+					card.update<AudioValue>(component.id, {
 						status: 'error',
 						message:
 							error.message ||
-							this.editor.language.get('audio', 'uploadError'),
+							this.editor.language.get<string>('audio', 'uploadError'),
 					});
 					delete this.cardComponents[file.uid || ''];
 				},

@@ -12,7 +12,7 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { omit } from 'lodash-es';
+import { omit } from 'lodash';
 import { CollapseItemProps } from '../../types'
 import AmCollapseItem from './item.vue'
 import { EngineInterface } from "@aomao/engine";

@@ -20,7 +20,7 @@ export interface CodeBlockValue extends CardValue {
 	mode?: string;
 	code?: string;
 	autoWrap?: boolean;
-};
+}
 
 class CodeBlcok<V extends CodeBlockValue = CodeBlockValue> extends Card<V> {
 	mirror?: Editor;
@@ -33,19 +33,19 @@ class CodeBlcok<V extends CodeBlockValue = CodeBlockValue> extends Card<V> {
 	}
 
 	static get autoSelected() {
-		return false
+		return false;
 	}
 
-	static get singleSelectable(){
+	static get singleSelectable() {
 		return false;
 	}
 
 	static getModes() {
 		return modeDatas;
 	}
-	
-	static get lazyRender(){
-		return true
+
+	static get lazyRender() {
+		return true;
 	}
 
 	resize = () => {
@@ -85,28 +85,93 @@ class CodeBlcok<V extends CodeBlockValue = CodeBlockValue> extends Card<V> {
 						);
 					}, 10);
 			},
+			onUpFocus: (event) => {
+				if (!isEngine(this.editor)) return;
+				event.preventDefault();
+				const { change, card } = this.editor;
+				const range = change.range.get().cloneRange();
+				const prev = this.root.prev();
+				const cardComponent = prev ? card.find(prev) : undefined;
+				if (cardComponent?.onSelectUp) {
+					cardComponent.onSelectUp(event);
+				} else if (prev) {
+					card.focusPrevBlock(this, range, false);
+					change.range.select(range);
+				} else {
+					this.focus(range, true);
+					change.range.select(range);
+					return;
+				}
+				this.activate(false);
+				this.toolbarModel?.hide();
+			},
+			onDownFocus: (event) => {
+				if (!isEngine(this.editor)) return;
+				event.preventDefault();
+				const { change, card } = this.editor;
+				const range = change.range.get().cloneRange();
+				const next = this.root.next();
+				const cardComponent = next ? card.find(next) : undefined;
+				if (cardComponent?.onSelectDown) {
+					cardComponent.onSelectDown(event);
+				} else if (next) {
+					card.focusNextBlock(this, range, false);
+					change.range.select(range);
+				} else {
+					this.focus(range, false);
+					change.range.select(range);
+					return;
+				}
+				this.activate(false);
+				this.toolbarModel?.hide();
+			},
+			onLeftFocus: (event) => {
+				if (!isEngine(this.editor)) return;
+				event.preventDefault();
+				const { change } = this.editor;
+				const range = change.range.get().cloneRange();
+				this.focus(range, true);
+				change.range.select(range);
+				this.activate(false);
+				this.toolbarModel?.hide();
+			},
+			onRightFocus: (event) => {
+				if (!isEngine(this.editor)) return;
+				event.preventDefault();
+				const { change } = this.editor;
+				const range = change.range.get().cloneRange();
+				this.focus(range, false);
+				change.range.select(range);
+				this.activate(false);
+				this.toolbarModel?.hide();
+			},
 		});
 	}
-
 	#viewAutoWrap?: boolean = undefined;
 	toolbar(): Array<CardToolbarItemOptions | ToolbarItemOptions> {
+		if (this.loading) return [];
 		if (!isEngine(this.editor) || this.editor.readonly) {
-			return [{ type: 'copy' },
-			{
-				type: 'switch',
-				content: this.editor.language.get<string>(CodeBlcok.cardName, 'autoWrap'),
-				getState: () => { 
-					if(this.#viewAutoWrap === undefined) {
-						this.#viewAutoWrap = !!this.getValue()?.autoWrap;
-					}
-					return this.#viewAutoWrap
+			return [
+				{ type: 'copy' },
+				{
+					type: 'switch',
+					content: this.editor.language.get<string>(
+						CodeBlcok.cardName,
+						'autoWrap',
+					),
+					getState: () => {
+						if (this.#viewAutoWrap === undefined) {
+							this.#viewAutoWrap = !!this.getValue()?.autoWrap;
+						}
+						return this.#viewAutoWrap;
+					},
+					onClick: () => {
+						const autoWrap = !this.#viewAutoWrap;
+						this.#viewAutoWrap = autoWrap;
+						this.codeEditor?.setAutoWrap(autoWrap);
+					},
 				},
-				onClick: () => { 
-					const autoWrap = !this.#viewAutoWrap;
-					this.#viewAutoWrap = autoWrap;
-					this.codeEditor?.setAutoWrap(autoWrap);
-				}
-			}];
+			];
 		}
 		return [
 			{
@@ -137,35 +202,71 @@ class CodeBlcok<V extends CodeBlockValue = CodeBlockValue> extends Card<V> {
 						);
 					}, 100);
 				},
-			}, {
+			},
+			{
 				type: 'switch',
-				content: this.editor.language.get<string>(CodeBlcok.cardName, 'autoWrap'),
-				getState: () => { 
+				content: this.editor.language.get<string>(
+					CodeBlcok.cardName,
+					'autoWrap',
+				),
+				getState: () => {
 					return !!this.getValue()?.autoWrap;
 				},
-				onClick: () => { 
-					const value = this.getValue()
+				onClick: () => {
+					const value = this.getValue();
 					const autoWrap = !value?.autoWrap;
 					this.setValue({
-						autoWrap
-					} as V)
+						autoWrap,
+					} as V);
 					this.codeEditor?.setAutoWrap(autoWrap);
-				}
-			}
+				},
+			},
 		];
 	}
 
 	focusEditor() {
 		this.codeEditor?.focus();
-		this.editor.card.activate(this.root)
+		this.editor.card.activate(this.root);
+	}
+
+	onSelectLeft(event: KeyboardEvent) {
+		if (!this.codeEditor) return;
+		event.preventDefault();
+		this.codeEditor.focus();
+		this.activate(true);
+		this.toolbarModel?.show();
+	}
+
+	onSelectRight(event: KeyboardEvent) {
+		if (!this.codeEditor) return;
+		event.preventDefault();
+		this.codeEditor.focus();
+		this.activate(true);
+		this.toolbarModel?.show();
+	}
+
+	onSelectDown(event: KeyboardEvent) {
+		if (!this.codeEditor) return;
+		event.preventDefault();
+		this.codeEditor.focus();
+		this.activate(true);
+		this.toolbarModel?.show();
+	}
+
+	onSelectUp(event: KeyboardEvent) {
+		if (!this.codeEditor) return;
+		event.preventDefault();
+		this.codeEditor.focus();
+		this.activate(true);
+		this.toolbarModel?.show();
 	}
 
 	render() {
 		if (!this.codeEditor) return;
 		if (!this.codeEditor.container.inEditor()) {
-			this.codeEditor.container = $(this.codeEditor.renderTemplate())
-			this.mirror = undefined
-			this.getCenter().append(this.codeEditor.container);
+			this.codeEditor.container = $(this.codeEditor.renderTemplate());
+			this.mirror = undefined;
+			this.getCenter().empty().append(this.codeEditor.container);
 		}
 		const value = this.getValue();
 
@@ -178,10 +279,14 @@ class CodeBlcok<V extends CodeBlockValue = CodeBlockValue> extends Card<V> {
 				return;
 			}
 			setTimeout(() => {
-				this.mirror = this.codeEditor?.create(mode, code, { lineWrapping: !!value?.autoWrap });
+				this.mirror = this.codeEditor?.create(mode, code, {
+					lineWrapping: !!value?.autoWrap,
+				});
 			}, 50);
 		} else {
-			this.codeEditor?.create(mode, code, { lineWrapping: !!value?.autoWrap });
+			this.codeEditor?.create(mode, code, {
+				lineWrapping: !!value?.autoWrap,
+			});
 		}
 	}
 }

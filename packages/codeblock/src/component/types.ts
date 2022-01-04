@@ -8,6 +8,10 @@ export type Options = {
 	onMouseDown?: (event: MouseEvent | TouchEvent) => void;
 	container?: NodeInterface;
 	synatxMap: { [key: string]: string };
+	onDownFocus?: (event: KeyboardEvent) => void;
+	onUpFocus?: (event: KeyboardEvent) => void;
+	onLeftFocus?: (event: KeyboardEvent) => void;
+	onRightFocus?: (event: KeyboardEvent) => void;
 };
 
 export interface CodeBlockEditor {
@@ -23,7 +27,7 @@ export interface CodeBlockEditorInterface {
 	getSyntax(mode: string): string;
 	create(mode: string, value: string, options?: EditorConfiguration): Editor;
 	update(mode: string, value?: string): void;
-	setAutoWrap(value: boolean): void
+	setAutoWrap(value: boolean): void;
 	render(mode: string, value: string, options?: EditorConfiguration): void;
 	save(): void;
 	focus(): void;

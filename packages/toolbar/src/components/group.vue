@@ -3,13 +3,13 @@
         <div v-if="!!icon || !!content">
             <a-popover
             :get-popup-container="getPopupContainer"
-            trigger="click"
             overlay-class-name="editor-toolbar-popover"
             :arrow-point-at-center="true"
-            :placement="isMobile ? 'topRight' : 'bottom'"
+            :placement="isMobile ? 'topRight' : undefined"
             >
                 <template #content>
-                    <div :class="['editor-toolbar', {'editor-toolbar-mobile': isMobile}]" data-element="ui">
+                    <div :class="['editor-toolbar', {'editor-toolbar-mobile': isMobile && !popup,
+								'editor-toolbar-popup': popup,}]" data-element="ui">
                         <template v-for="(item , index) in items">
                             <am-button v-if="item.type === 'button'" :key="index" v-bind="item" :engine="engine" />
                             <am-dropdown v-if="item.type === 'dropdown'" :key="index" v-bind="item" :engine="engine" />
@@ -60,6 +60,7 @@ export default class ToolbarGroup extends Vue {
 				| ToolbarCollapseGroupProps)[]
 	@Prop(String) icon?: string
     @Prop([String, Function]) content?: string | (() => string) | VNode
+    @Prop(Boolean) popup?: boolean
     isMobile = false
 
     mounted() {
@@ -67,7 +68,7 @@ export default class ToolbarGroup extends Vue {
     }
 
     getPopupContainer(){
-        return document.querySelector('.editor-toolbar') || document.body
+        return document.querySelector('.data-toolbar-popup-wrapper') || document.querySelector('.editor-toolbar') || document.body
     }
 }
 </script>

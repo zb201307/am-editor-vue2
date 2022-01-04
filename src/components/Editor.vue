@@ -201,8 +201,8 @@ export default class Editor extends Vue {
       });
 
       // 监听编辑器值改变事件
-      engine.on("change", (value) => {
-        console.log("value", value);
+      engine.on("change", () => {
+        console.log("value", engine.getValue());
         console.log("html:", engine.getHtml());
       });
 

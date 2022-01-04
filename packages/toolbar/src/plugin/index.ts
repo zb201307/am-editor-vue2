@@ -6,16 +6,20 @@ import {
 	Plugin,
 	PluginOptions,
 } from '@aomao/engine';
-import { CollapseItemProps } from '../types';
+import { CollapseItemProps, GroupItemProps } from '../types';
 import locales from '../locales';
-import ToolbarComponent, { ToolbarValue } from './component';
+import ToolbarComponent, { ToolbarPopup } from './component';
+import type { ToolbarValue } from './component';
 
 type Config = Array<{
 	title: string;
 	items: Array<Omit<CollapseItemProps, 'engine'> | string>;
 }>;
 export interface ToolbarOptions extends PluginOptions {
-	config: Config;
+	config?: Config;
+	popup?: {
+		items: GroupItemProps[];
+	};
 }
 
 const defaultConfig = (editor: EditorInterface): Config => {
@@ -39,20 +43,28 @@ const defaultConfig = (editor: EditorInterface): Config => {
 	];
 };
 
-class ToolbarPlugin<T extends ToolbarOptions = ToolbarOptions> extends Plugin<T> {
+class ToolbarPlugin<
+	T extends ToolbarOptions = ToolbarOptions,
+> extends Plugin<T> {
 	static get pluginName() {
 		return 'toolbar';
 	}
+	private popup?: ToolbarPopup;
 
 	init() {
 		if (isEngine(this.editor)) {
-			this.editor.on('keydown:slash', (event) => this.onSlash(event));
-			this.editor.on('paser:value', (node) => this.paserValue(node));
+			this.editor.on('keydown:slash', this.onSlash);
+			this.editor.on('parse:value', this.paserValue);
 		}
 		this.editor.language.add(locales);
+		if (this.options.popup) {
+			this.popup = new ToolbarPopup(this.editor, {
+				items: this.options.popup.items,
+			});
+		}
 	}
 
-	paserValue(node: NodeInterface) {
+	paserValue = (node: NodeInterface) => {
 		if (
 			node.isCard() &&
 			node.attributes('name') === ToolbarComponent.cardName
@@ -60,9 +72,9 @@ class ToolbarPlugin<T extends ToolbarOptions = ToolbarOptions> extends Plugin<T>
 			return false;
 		}
 		return true;
-	}
+	};
 
-	onSlash(event: KeyboardEvent) {
+	onSlash = (event: KeyboardEvent) => {
 		if (!isEngine(this.editor)) return;
 		const { change } = this.editor;
 		let range = change.range.get();
@@ -97,11 +109,18 @@ class ToolbarPlugin<T extends ToolbarOptions = ToolbarOptions> extends Plugin<T>
 				change.range.select(range);
 			}
 		}
-	}
+	};
 
 	execute(...args: any): void {
 		throw new Error('Method not implemented.');
 	}
+
+	destroy() {
+		this.popup?.destroy();
+		this.editor.off('keydown:slash', this.onSlash);
+		this.editor.off('parse:value', this.paserValue);
+	}
 }
-export { ToolbarComponent, ToolbarValue };
+export { ToolbarComponent };
+export type { ToolbarValue };
 export default ToolbarPlugin;

@@ -10,7 +10,8 @@ import {
     decodeCardValue,
     CardType,
 } from '@aomao/engine';
-import MapComponent, { MapValue } from './component';
+import MapComponent from './component';
+import type { MapValue } from './component';
 import locales from './locales';
 
 export interface MapOptions extends PluginOptions {

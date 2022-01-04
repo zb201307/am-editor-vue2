@@ -1,7 +1,7 @@
 <template>
     <div
     ref="toolbarRef"
-    :class="['editor-toolbar', className, {'editor-toolbar-mobile': isMobile }]"
+    :class="['editor-toolbar', className, {'editor-toolbar-mobile': isMobile && !popup, 'editor-toolbar-popup': popup, }]"
     :style="isMobile ? { top: `${mobileView.top}px` } : {}"
     data-element="ui"
     @mouseover="triggerMouseOver"
@@ -9,13 +9,13 @@
     @contextmenu="triggerContextMenu"
     >
         <div class="editor-toolbar-content">
-            <am-group v-for="(group,index) in groupValue" :key="index" :engine="engine" v-bind="group" />
+            <am-group v-for="(group,index) in groupValue" :key="index" :engine="engine" :popup="popup" v-bind="group" />
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { merge, omit } from 'lodash-es';
+import { merge, omit } from 'lodash';
 import { EngineInterface, isMobile } from '@aomao/engine'
 import { ToolbarButtonProps, CollapseItemProps, ToolbarColorProps, ToolbarDropdownProps, GroupDataProps, ToolbarCollapseGroupProps, GroupItemProps } from '../types'
 import AmGroup from './group.vue'
@@ -34,6 +34,7 @@ export default class Toolbar extends Vue {
     @Prop({ type: Object, required: true}) engine!: EngineInterface
     @Prop({ type: Array, default: []}) items!: Array<GroupItemProps>
     @Prop(String) className?: string
+    @Prop({ type: Boolean, default: false}) popup!: boolean
 
     groupValue: GroupDataProps[] = []
     isMobile = false
@@ -259,13 +260,26 @@ export {
     box-shadow: none;
 }
 
+.editor-toolbar.editor-toolbar-popup {
+    position: initial;
+    box-shadow: none;
+    top: 0;
+    left: 0;
+    border: 0 none;
+}
+
 .editor-toolbar-mobile .editor-toolbar-content {
     text-align: left;
     padding: 0 12px;
 }
 
-.editor-toolbar-mobile .editor-toolbar-group {
+.editor-toolbar-mobile .editor-toolbar-group,.editor-toolbar-popup .editor-toolbar-group {
     border: 0 none;
+    padding: 0;
+}
+
+.editor-toolbar-popup .editor-toolbar-content {
+    text-align: center;
     padding: 0;
 }
 

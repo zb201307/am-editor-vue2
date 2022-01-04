@@ -1,9 +1,10 @@
 import CodeMirror, { EditorConfiguration, Editor } from 'codemirror';
-import { debounce } from 'lodash-es';
+import { debounce } from 'lodash';
 import {
 	$,
 	EditorInterface,
 	isEngine,
+	isHotkey,
 	isMobile,
 	NodeInterface,
 } from '@aomao/engine';
@@ -130,7 +131,48 @@ class CodeBlockEditor implements CodeBlockEditorInterface {
 				mirror.execCommand('newlineAndIndent');
 			},
 		});
+		this.codeMirror.on('keydown', (editor, event) => {
+			const lineCount = editor.lineCount();
+			const { line, ch } = editor.getCursor();
+			const { onUpFocus, onDownFocus, onLeftFocus, onRightFocus } =
+				this.options;
 
+			const content = editor.getLine(line);
+			// 在最后一行
+			if (line === lineCount - 1 && ch === content.length) {
+				// 按下下键
+				if (isHotkey('down', event) || isHotkey('ctrl+n', event)) {
+					if (onDownFocus) onDownFocus(event);
+					return;
+				}
+				// 按下右键
+				else if (
+					isHotkey('right', event) ||
+					isHotkey('shift+right', event) ||
+					isHotkey('ctrl+e', event) ||
+					isHotkey('ctrl+f', event)
+				) {
+					if (onRightFocus) onRightFocus(event);
+					return;
+				}
+			}
+			// 在第一行按下上键
+			if (line === 0 && ch === 0) {
+				// 按下上键
+				if (isHotkey('up', event) || isHotkey('ctrl+p', event)) {
+					if (onUpFocus) onUpFocus(event);
+				}
+				// 按下左键
+				else if (
+					isHotkey('left', event) ||
+					isHotkey('shift+left', event) ||
+					isHotkey('ctrl+b', event) ||
+					isHotkey('ctrl+a', event)
+				) {
+					if (onLeftFocus) onLeftFocus(event);
+				}
+			}
+		});
 		this.container.on('mousedown', (event: MouseEvent) => {
 			if (!this.codeMirror?.hasFocus()) {
 				setTimeout(() => {
@@ -141,7 +183,7 @@ class CodeBlockEditor implements CodeBlockEditorInterface {
 		return this.codeMirror;
 	}
 
-	setAutoWrap(value: boolean) { 
+	setAutoWrap(value: boolean) {
 		this.codeMirror?.setOption('lineWrapping', value);
 	}
 
@@ -155,7 +197,7 @@ class CodeBlockEditor implements CodeBlockEditorInterface {
 			'readOnly',
 			!isEngine(this.editor) || this.editor.readonly ? true : false,
 		);
-		if (code !== undefined) this.save();
+		this.save();
 	}
 
 	render(mode: string, value: string, options?: EditorConfiguration) {
@@ -166,7 +208,10 @@ class CodeBlockEditor implements CodeBlockEditorInterface {
 		);
 		root.append(stage);
 		const pre = stage.find('pre')[0];
-		this.runMode(value || '', mode, pre, {...this.getConfig(value, mode), ...options});
+		this.runMode(value || '', mode, pre, {
+			...this.getConfig(value, mode),
+			...options,
+		});
 	}
 
 	save() {

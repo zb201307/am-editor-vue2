@@ -5,7 +5,8 @@ import {
 	fontfamily,
 } from './config';
 import ToolbarPlugin, { ToolbarComponent } from './plugin';
-
+import type { ToolbarOptions } from './plugin';
+import type { ToolbarProps, GroupItemProps, ToolbarItemProps } from './types';
 
 export default Toolbar;
 export {
@@ -15,3 +16,4 @@ export {
 	fontFamilyDefaultData,
 	fontfamily,
 };
+export type { ToolbarOptions, ToolbarProps, GroupItemProps, ToolbarItemProps };

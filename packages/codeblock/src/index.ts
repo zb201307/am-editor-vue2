@@ -15,10 +15,13 @@ import {
 	READY_CARD_KEY,
 	decodeCardValue,
 } from '@aomao/engine';
-import CodeBlockComponent, { CodeBlockEditor, CodeBlockValue } from './component';
+import CodeBlockComponent, {
+	CodeBlockEditor,
+	CodeBlockValue,
+} from './component';
 import locales from './locales';
 
-export interface CodeBlockOptions extends PluginOptions {
+export interface CodeblockOptions extends PluginOptions {
 	hotkey?: string | Array<string>;
 	markdown?: boolean;
 }
@@ -37,14 +40,16 @@ const MODE_ALIAS: { [key: string]: string } = {
 	'c++': 'cpp',
 };
 
-export default class<T extends CodeBlockOptions = CodeBlockOptions> extends Plugin<T> {
+export default class<
+	T extends CodeblockOptions = CodeblockOptions,
+> extends Plugin<T> {
 	static get pluginName() {
 		return 'codeblock';
 	}
 
 	init() {
 		this.editor.language.add(locales);
-		this.editor.on('paser:html', (node) => this.parseHtml(node));
+		this.editor.on('parse:html', (node) => this.parseHtml(node));
 		this.editor.on('paste:schema', (schema) => this.pasteSchema(schema));
 		this.editor.on('paste:each', (child) => this.pasteHtml(child));
 		if (isEngine(this.editor) && this.markdown) {
@@ -62,7 +67,10 @@ export default class<T extends CodeBlockOptions = CodeBlockOptions> extends Plug
 	execute(mode: string, value: string) {
 		if (!isEngine(this.editor)) return;
 		const { card } = this.editor;
-		const component = card.insert<CodeBlockValue, CodeBlockComponent<CodeBlockValue>>(CodeBlockComponent.cardName, {
+		const component = card.insert<
+			CodeBlockValue,
+			CodeBlockComponent<CodeBlockValue>
+		>(CodeBlockComponent.cardName, {
 			mode,
 			code: value,
 		});
@@ -72,7 +80,7 @@ export default class<T extends CodeBlockOptions = CodeBlockOptions> extends Plug
 	}
 
 	hotkey() {
-		return this.options.hotkey ||  '';
+		return this.options.hotkey || '';
 	}
 
 	markdown(event: KeyboardEvent) {
@@ -256,10 +264,14 @@ export default class<T extends CodeBlockOptions = CodeBlockOptions> extends Plug
 
 			if (code.endsWith('\n')) code = code.substr(0, code.length - 2);
 			const tempNode = $('<div></div>');
-			const carNode = card.replaceNode<CodeBlockValue>(tempNode, 'codeblock', {
-				mode,
-				code,
-			});
+			const carNode = card.replaceNode<CodeBlockValue>(
+				tempNode,
+				'codeblock',
+				{
+					mode,
+					code,
+				},
+			);
 			tempNode.remove();
 
 			return carNode.get<Element>()?.outerHTML;
@@ -306,62 +318,63 @@ export default class<T extends CodeBlockOptions = CodeBlockOptions> extends Plug
 	parseHtml(root: NodeInterface) {
 		if (isServer) return;
 
-		root.find(`[${CARD_KEY}="${CodeBlockComponent.cardName}"],[${READY_CARD_KEY}="${CodeBlockComponent.cardName}"]`).each(
-			(cardNode) => {
-				const node = $(cardNode);
-				const card = this.editor.card.find<CodeBlockValue, CodeBlockComponent<CodeBlockValue>>(node)
-				const value = card?.getValue() || decodeCardValue<CodeBlockValue>(node.attributes(CARD_VALUE_KEY));
-				if (value && value.code) {
-					node.empty();
-					const synatxMap: { [key: string]: string } = {};
-					CodeBlockComponent.getModes().forEach((item) => {
-						synatxMap[item.value] = item.syntax;
-					});
-					const codeEditor = new CodeBlockEditor(this.editor, {
-						synatxMap,
-					});
+		root.find(
+			`[${CARD_KEY}="${CodeBlockComponent.cardName}"],[${READY_CARD_KEY}="${CodeBlockComponent.cardName}]"`,
+		).each((cardNode) => {
+			const node = $(cardNode);
+			const card = this.editor.card.find(
+				node,
+			) as CodeBlockComponent<CodeBlockValue>;
+			const value =
+				card?.getValue() ||
+				decodeCardValue(node.attributes(CARD_VALUE_KEY));
+			if (value && value.code) {
+				node.empty();
+				const synatxMap: { [key: string]: string } = {};
+				CodeBlockComponent.getModes().forEach((item) => {
+					synatxMap[item.value] = item.syntax;
+				});
+				const codeEditor = new CodeBlockEditor(this.editor, {
+					synatxMap,
+				});
 
-					const content = codeEditor.container.find(
-						'.data-codeblock-content',
-					);
-					content.css({
-						border: '1px solid #e8e8e8',
-						'max-width': '750px',
-					});
-					codeEditor.render(value.mode || 'plain', value.code || '');
-					content.addClass('am-engine-view');
-					content.hide();
-					document.body.appendChild(content[0]);
-					content.traverse((node) => {
-						if (
-							node.type === Node.ELEMENT_NODE &&
-							(node.get<HTMLElement>()?.classList?.length || 0) >
-								0
-						) {
-							const element = node.get<HTMLElement>()!;
-							const style = window.getComputedStyle(element);
-							[
-								'color',
-								'margin',
-								'padding',
-								'background',
-							].forEach((attr) => {
+				const content = codeEditor.container.find(
+					'.data-codeblock-content',
+				);
+				content.css({
+					border: '1px solid #e8e8e8',
+					'max-width': '750px',
+				});
+				codeEditor.render(value.mode || 'plain', value.code || '');
+				content.addClass('am-engine-view');
+				content.hide();
+				document.body.appendChild(content[0]);
+				content.traverse((node) => {
+					if (
+						node.type === Node.ELEMENT_NODE &&
+						(node.get<HTMLElement>()?.classList?.length || 0) > 0
+					) {
+						const element = node.get<HTMLElement>()!;
+						const style = window.getComputedStyle(element);
+						['color', 'margin', 'padding', 'background'].forEach(
+							(attr) => {
 								(element.style as any)[attr] =
 									style.getPropertyValue(attr);
-							});
-						}
-					});
-					content.show();
-					content.css('background', '#f9f9f9');
-					node.append(content);
-					node.removeAttributes(CARD_KEY);
-					node.removeAttributes(CARD_TYPE_KEY);
-					node.removeAttributes(CARD_VALUE_KEY);
-					node.attributes('data-syntax', value.mode || 'plain');
-					content.removeClass('am-engine-view');
-				} else node.remove();
-			},
-		);
+							},
+						);
+					}
+				});
+				content.show();
+				content.css('background', '#f9f9f9');
+				node.append(content);
+				node.removeAttributes(CARD_KEY);
+				node.removeAttributes(CARD_TYPE_KEY);
+				node.removeAttributes(CARD_VALUE_KEY);
+				node.attributes('data-syntax', value.mode || 'plain');
+				content.removeClass('am-engine-view');
+			} else node.remove();
+		});
 	}
 }
-export { CodeBlockComponent, CodeBlockValue };
+export { CodeBlockComponent };
+export type { CodeBlockValue };

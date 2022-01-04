@@ -15,9 +15,11 @@ import {
 } from '../../types';
 import { getToolbarDefaultConfig } from '../../config';
 import CollapseComponent, { CollapseComponentInterface } from './collapse';
+import ToolbarPopup from './popup';
 import './index.css';
 
 type Data = Array<CollapseGroupProps>;
+
 export interface ToolbarValue extends CardValue {
 	data: Data;
 }
@@ -41,8 +43,8 @@ class ToolbarComponent<V extends ToolbarValue = ToolbarValue> extends Card<V> {
 		return false;
 	}
 
-	static get autoSelected(){
-		return false
+	static get autoSelected() {
+		return false;
 	}
 
 	init() {
@@ -59,7 +61,7 @@ class ToolbarComponent<V extends ToolbarValue = ToolbarValue> extends Card<V> {
 			},
 		});
 	}
-	
+
 	setData(_data: any) {
 		this.#data = _data;
 	}
@@ -83,31 +85,32 @@ class ToolbarComponent<V extends ToolbarValue = ToolbarValue> extends Card<V> {
 			collapseItems.push(...group.items);
 		});
 		const value = this.getValue();
-
-		(this.#data || (value ? value['data'] : []) || []).forEach((group: any) => {
-			const title = group.title;
-			const items: Array<Omit<CollapseItemProps, 'engine'>> = [];
-			group.items.forEach((item: any) => {
-				let name = item;
-				if (typeof item !== 'string') name = item.name;
-				const collapseItem = collapseItems.find(
-					(item) => item.name === name,
-				);
-				if (collapseItem) {
-					items.push({
-						...collapseItem,
-						...(typeof item !== 'string' ? item : {}),
-						disabled: collapseItem.onDisabled
-							? collapseItem.onDisabled()
-							: !this.editor.command.queryEnabled(name),
-					});
-				} else if (typeof item === 'object') items.push(item);
-			});
-			data.push({
-				title,
-				items,
-			});
-		});
+		(this.#data || (value ? value.data : []) || []).forEach(
+			(group: any) => {
+				const title = group.title;
+				const items: Array<Omit<CollapseItemProps, 'engine'>> = [];
+				group.items.forEach((item: any) => {
+					let name = item;
+					if (typeof item !== 'string') name = item.name;
+					const collapseItem = collapseItems.find(
+						(item) => item.name === name,
+					);
+					if (collapseItem) {
+						items.push({
+							...collapseItem,
+							...(typeof item !== 'string' ? item : {}),
+							disabled: collapseItem.onDisabled
+								? collapseItem.onDisabled()
+								: !this.editor.command.queryEnabled(name),
+						});
+					}
+				});
+				data.push({
+					title,
+					items,
+				});
+			},
+		);
 		return data;
 	}
 
@@ -212,7 +215,7 @@ class ToolbarComponent<V extends ToolbarValue = ToolbarValue> extends Card<V> {
 	}
 
 	render(data?: any): string | void | NodeInterface {
-		this.#data = data;
+		this.setData(data);
 		const editor = this.editor;
 		if (!isEngine(editor) || isServer) return;
 		const language = editor.language.get<{ placeholder: string }>(
@@ -263,3 +266,4 @@ class ToolbarComponent<V extends ToolbarValue = ToolbarValue> extends Card<V> {
 }
 
 export default ToolbarComponent;
+export { ToolbarPopup };
