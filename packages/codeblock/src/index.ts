@@ -28,7 +28,7 @@ export interface CodeBlockOptions extends PluginOptions {
 }
 
 // 缩写替换
-const MODE_ALIAS: { [key: string]: string } = {
+const MODE_ALIAS = {
 	text: 'plain',
 	sh: 'bash',
 	ts: 'typescript',
@@ -39,7 +39,7 @@ const MODE_ALIAS: { [key: string]: string } = {
 	vb: 'basic',
 	md: 'markdown',
 	'c++': 'cpp',
-	'c#': 'csharp'
+	'c#': 'csharp',
 };
 
 export default class<
@@ -88,10 +88,11 @@ export default class<
 	markdown(event: KeyboardEvent) {
 		if (!isEngine(this.editor) || this.options.markdown === false) return;
 		const { change, node, command } = this.editor;
+		const blockApi = this.editor.block;
 		const range = change.range.get();
 
 		if (!range.collapsed || change.isComposing() || !this.markdown) return;
-		const blockApi = this.editor.block;
+
 		const block = blockApi.closest(range.startNode);
 
 		if (!node.isRootBlock(block)) {
@@ -254,7 +255,7 @@ export default class<
 			nameMaps[item.value] = item.name;
 		});
 		const langs = Object.keys(nameMaps)
-			.concat(Object.keys(MODE_ALIAS))
+			.concat(Object.keys(MODE_ALIAS)).concat(Object.keys(this.options.alias || {}))
 			.sort((a, b) => (a.length > b.length ? -1 : 1));
 
 		const createCodeblock = (
@@ -300,11 +301,12 @@ export default class<
 				mode =
 					langs.find((key) => match && match[1].indexOf(key) === 0) ||
 					'text';
-				const code =
+				let code =
 					match[1].indexOf(mode) === 0
 						? match[1].substr(mode.length + 1)
 						: match[1];
-				mode = MODE_ALIAS[mode] || mode;
+				const alias = { ...(this.options.alias || {}), ...MODE_ALIAS };
+			 	mode = alias[mode] || mode;
 				nodes.push(code);
 			} else if (isCode) {
 				nodes.push(row);
@@ -322,7 +324,7 @@ export default class<
 		if (isServer) return;
 
 		root.find(
-			`[${CARD_KEY}="${CodeBlockComponent.cardName}"],[${READY_CARD_KEY}="${CodeBlockComponent.cardName}]"`,
+			`[${CARD_KEY}="${CodeBlockComponent.cardName}"],[${READY_CARD_KEY}="${CodeBlockComponent.cardName}"]`,
 		).each((cardNode) => {
 			const node = $(cardNode);
 			const card = this.editor.card.find(
@@ -331,7 +333,7 @@ export default class<
 			const value =
 				card?.getValue() ||
 				decodeCardValue(node.attributes(CARD_VALUE_KEY));
-			if (value && value.code) {
+			if (value) {
 				node.empty();
 				const synatxMap: { [key: string]: string } = {};
 				CodeBlockComponent.getModes().forEach((item) => {
