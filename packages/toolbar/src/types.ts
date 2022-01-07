@@ -1,4 +1,4 @@
-import { EngineInterface } from '@aomao/engine';
+import type { EngineInterface, Placement } from '@aomao/engine';
 import { PropType, VNode } from 'vue';
 
 //命令
@@ -6,20 +6,6 @@ export type Command =
 	| { name: string; args: Array<any> }
 	| Array<any>
 	| undefined;
-//tooltip 位置
-export type Placement =
-	| 'top'
-	| 'left'
-	| 'right'
-	| 'bottom'
-	| 'topLeft'
-	| 'topRight'
-	| 'bottomLeft'
-	| 'bottomRight'
-	| 'leftTop'
-	| 'leftBottom'
-	| 'rightTop'
-	| 'rightBottom';
     //按钮
 export const buttonProps = {
 	engine: Object as PropType<EngineInterface | undefined>,
@@ -117,6 +103,7 @@ export type DropdownProps = {
 	onSelect?: (event: MouseEvent, key: string) => void | boolean
 	hasArrow?: boolean
 	hasDot?: boolean
+	placement?: Placement
 };
 
 export type GroupDropdownProps = {
@@ -147,6 +134,7 @@ export type ColorPickerProps = {
 	defaultColor: string
 	defaultActiveColor: string
 	setStroke?: boolean
+	placement?: Placement
 	onSelect?: (color: string, event: MouseEvent) => void
 };
 

@@ -22,9 +22,9 @@
 import { VNode } from "vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Tooltip } from "ant-design-vue"
-import { EngineInterface, formatHotkey, isMobile } from '@aomao/engine'
+import { EngineInterface, formatHotkey, isMobile, Placement } from '@aomao/engine'
 import { autoGetHotkey } from "../utils"
-import { Command, Placement } from "../types"
+import { Command } from "../types"
 
 @Component({
     components: {
@@ -109,7 +109,7 @@ export default class Button extends Vue {
 </script>
 <style>
 .editor-toolbar .toolbar-button {
-    display: inline-flex;
+    display: inline-block;
     align-items: center;
     justify-content: center;
     width: auto;
@@ -130,7 +130,6 @@ export default class Button extends Vue {
     min-width: 24px;
     line-height: 24px;
     border-radius: 4px;
-    margin: 0 4px;
 }
 .editor-toolbar:not(.editor-toolbar-mobile) .toolbar-button {
     padding: 0 4px;

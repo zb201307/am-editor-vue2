@@ -30,8 +30,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Popover } from 'ant-design-vue'
 import { VNode } from "vue";
-import { EngineInterface } from "@aomao/engine";
-import { Command, Placement } from '../../types'
+import { EngineInterface, Placement } from "@aomao/engine";
+import { Command  } from '../../types'
 
 @Component({
     components: {

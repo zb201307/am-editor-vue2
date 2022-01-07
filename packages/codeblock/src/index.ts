@@ -100,13 +100,13 @@ export default class<
 		}
 
 		const chars = blockApi.getLeftText(block);
-		const match = /^```(.*){0,20}$/.exec(chars);
+		const match = /^`{3,}(.*){0,20}$/.exec(chars);
 
 		if (match) {
-			const modeText = (
-				undefined === match[1] ? '' : match[1]
-			).toLowerCase();
-			const alias = { ...(this.options.alias || {}), ...MODE_ALIAS };
+			const modeText = (undefined === match[1] ? '' : match[1])
+				.trim()
+				.toLowerCase();
+			const alias: Record<string, string> = { ...(this.options.alias || {}), ...MODE_ALIAS };
 			const mode = alias[modeText] || modeText;
 
 			if (mode || mode === '') {
@@ -234,7 +234,7 @@ export default class<
 		if (!isEngine(this.editor) || !this.markdown || !node.isText()) return;
 		const text = node.text();
 		if (!text) return;
-		const reg = /```/;
+		const reg = /`{3,}/;
 		const match = reg.exec(text);
 		return {
 			reg,
@@ -286,7 +286,7 @@ export default class<
 		let isCode = false;
 		let mode = 'text';
 		rows.forEach((row) => {
-			let match = /^(.*)```(\s)*$/.exec(row);
+			let match = /^(.*)`{3,}(\s)*$/.exec(row);
 			if (match && isCode) {
 				nodes.push(match[1]);
 				newText += createCodeblock(nodes, mode) + '\n';
@@ -295,19 +295,19 @@ export default class<
 				nodes = [];
 				return;
 			}
-			match = /^```(.*)/.exec(row);
+			match = /^`{3,}(.*)/.exec(row);
 			if (match) {
 				isCode = true;
-				mode =
-					langs.find((key) => match && match[1].indexOf(key) === 0) ||
-					'text';
-				let code =
-					match[1].indexOf(mode) === 0
-						? match[1].substr(mode.length + 1)
-						: match[1];
-				const alias = { ...(this.options.alias || {}), ...MODE_ALIAS };
+				mode = langs.find(
+					(key) =>
+						match &&
+						(match[1] || '')
+							.trim()
+							.toLowerCase()
+							.indexOf(key) === 0,
+				) || 'text';
+				const alias: Record<string, string> = { ...(this.options.alias || {}), ...MODE_ALIAS };
 			 	mode = alias[mode] || mode;
-				nodes.push(code);
 			} else if (isCode) {
 				nodes.push(row);
 			} else {

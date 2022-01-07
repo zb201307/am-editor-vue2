@@ -13,7 +13,7 @@
         >
             <am-button
             :name="name"
-            
+            :placement="placement"
             :title="title"
             :active="visible"
             :disabled="disabled"
@@ -41,7 +41,7 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { EngineInterface, isMobile } from "@aomao/engine";
+import { EngineInterface, isMobile, Placement } from "@aomao/engine";
 import { DropdownListItem  } from '../types'
 import AmDropdownList from './dropdown-list.vue'
 import AmButton from './button.vue'
@@ -67,7 +67,7 @@ export default class Dropdown extends Vue {
     @Prop(Function) onSelect?: (event: MouseEvent, key: string) => void | boolean
     @Prop({ type: [Boolean, Object], default: undefined}) hasArrow?: boolean
     @Prop({ type: [Boolean, Object], default: undefined}) hasDot?: boolean
-
+    @Prop({ type: [String], default: undefined}) placement?: Placement
     valuesVar: string | number | string[] = ""
     buttonContent?: DropdownListItem | {icon?:string,content?:string} | null = null
     buttonRef: HTMLElement | null = null
@@ -155,11 +155,9 @@ export default class Dropdown extends Vue {
 <style>
 .toolbar-dropdown {
     position: relative;
-    display: inline-flex;
 }
 
 .toolbar-dropdown .toolbar-dropdown-trigger {
-    display: inline-flex;
     align-items: center;
 }
 
@@ -169,6 +167,7 @@ export default class Dropdown extends Vue {
 
 .toolbar-dropdown .toolbar-dropdown-trigger-arrow .toolbar-button{
     padding-right: 20px;
+    margin: 0;
 }
 
 .toolbar-dropdown .toolbar-dropdown-trigger-arrow .data-icon-arrow {

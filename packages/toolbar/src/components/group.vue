@@ -1,6 +1,6 @@
 <template>
-    <div class="editor-toolbar-group">
-        <div v-if="!!icon || !!content">
+    <div >
+        <div class="editor-toolbar-group" v-if="!!icon || !!content">
             <a-popover
             :get-popup-container="getPopupContainer"
             overlay-class-name="editor-toolbar-popover"
@@ -11,17 +11,17 @@
                     <div :class="['editor-toolbar', {'editor-toolbar-mobile': isMobile && !popup,
 								'editor-toolbar-popup': popup,}]" data-element="ui">
                         <template v-for="(item , index) in items">
-                            <am-button v-if="item.type === 'button'" :key="index" v-bind="item" :engine="engine" />
-                            <am-dropdown v-if="item.type === 'dropdown'" :key="index" v-bind="item" :engine="engine" />
-                            <am-color v-if="item.type === 'color'" :key="index" v-bind="item" :engine="engine" />
-                            <am-collapse v-if="item.type === 'collapse'" :key="index" v-bind="item" :engine="engine" />
+                            <am-button v-if="item.type === 'button'" :key="index" v-bind="item" placement="top" :engine="engine" />
+                            <am-dropdown v-if="item.type === 'dropdown'" :key="index" v-bind="item" placement="top" :engine="engine" />
+                            <am-color v-if="item.type === 'color'" :key="index" v-bind="item" placement="top" :engine="engine" />
+                            <am-collapse v-if="item.type === 'collapse'" :key="index" v-bind="item" placement="top" :engine="engine" />
                         </template>
                     </div>
                 </template>
                 <am-button name="group-popover" :icon="icon" :content="content" />
             </a-popover>
         </div>
-        <div v-if="!icon && !content">
+        <div v-if="!icon && !content" class="editor-toolbar-group">
             <template v-for="(item , index) in items">
                 <am-button v-if="item.type === 'button'" :key="index" v-bind="item" :engine="engine" />
                 <am-dropdown v-if="item.type === 'dropdown'" :key="index" v-bind="item" :engine="engine" />
@@ -77,6 +77,8 @@ export default class ToolbarGroup extends Vue {
     padding: 4px 8px;
     width: auto;
     border-left: 1px solid #e8e8e8;
+    display: flex;
+    align-items: center;
 }
 
 .editor-toolbar .editor-toolbar-group:nth-child(1) {

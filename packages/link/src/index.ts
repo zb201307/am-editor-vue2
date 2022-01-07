@@ -39,7 +39,7 @@ export default class<T extends LinkOptions = LinkOptions> extends InlinePlugin<T
 
 	markdown =
 		this.options.markdown === undefined
-			? '\\[(.+?)\\]\\(([\\S]+?)\\)$'
+		? '\\[(.+?)\\]\\(s*([\\S]+?)\\s*\\)$'
 			: this.options.markdown;
 
 	init() {
@@ -147,7 +147,7 @@ export default class<T extends LinkOptions = LinkOptions> extends InlinePlugin<T
 		const text = node.text();
 		if (!text) return;
 
-		const reg = /(\[(.+?)\]\(([\S]+?)\))/;
+		const reg = /(\[(.+?)\]\(\s*([\S]+?)\s*\))/;
 		const match = reg.exec(text);
 		return {
 			reg,
@@ -187,7 +187,7 @@ export default class<T extends LinkOptions = LinkOptions> extends InlinePlugin<T
 			const url = match[3];
 
 			const inlineNode = $(`<${this.tagName} />`);
-			this.setAttributes(inlineNode, '_blank', url);
+			this.setAttributes(inlineNode, '_blank', (url || '').trim());
 			inlineNode.html(text ? text : url);
 
 			newText += inlineNode.get<Element>()?.outerHTML;

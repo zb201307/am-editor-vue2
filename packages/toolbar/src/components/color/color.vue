@@ -10,6 +10,7 @@
             :name="name"
             :title="buttonTitle"
             :on-click="triggerClick"
+            :placement="placement"
             :disabled="disabled"
             >
                 <span v-html="buttonContent"></span>
@@ -19,6 +20,7 @@
             :name="name"
             :title="dropdownTitle"
             :on-click="toggleDropdown"
+            :placement="placement"
             :disabled="disabled"
             >
                 <template #icon>
@@ -41,7 +43,7 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { EngineInterface, isMobile } from "@aomao/engine";
+import { EngineInterface, isMobile, Placement } from "@aomao/engine";
 import AmButton from '../button.vue'
 import AmColorPicker from './picker/picker.vue'
 import Palette from './picker/palette';
@@ -68,6 +70,7 @@ export default class AmColor extends Vue {
     @Prop({ type: String, required: true}) defaultActiveColor!: string
     @Prop({ type: [Boolean, Object], default: undefined}) setStroke?: boolean
     @Prop(Function) onSelect?: (color: string, event: MouseEvent) => void
+    @Prop({ type: [String], default: undefined}) placement?: Placement
 
     visible = false
     buttonRef: HTMLDivElement | null = null
@@ -158,7 +161,6 @@ export default class AmColor extends Vue {
 }
 
 .colorpicker-button-group .colorpicker-button-text {
-    height: 32px;
     margin-right: 0;
     min-width: 26px;
     border-radius: 3px 0 0 3px;
@@ -168,12 +170,25 @@ export default class AmColor extends Vue {
     background-color: #e8e8e8;
 }
 
+.editor-toolbar.editor-toolbar-popup .colorpicker-button-group .colorpicker-button-text {
+    margin: 0;
+    border-radius: 3px 0 0 3px;
+}
+
 .colorpicker-button-group .colorpicker-button-dropdown {
-    height: 32px;
     margin-left: -1px;
     min-width: 17px;
     text-align: center;
     padding: 0 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.editor-toolbar.editor-toolbar-popup .colorpicker-button-group .colorpicker-button-dropdown {
+    line-height: 24px;
+    min-width: 17px;
+    padding: 0 4px;
+    margin: 0;
+    margin-left: -1px;
     border-radius: 0 3px 3px 0;
 }
   
