@@ -181,6 +181,7 @@ class Toolbar {
 	}
 
 	show(target: NodeInterface, forceEdit?: boolean) {
+		if (this.target?.equal(target) && !!this.root?.parent()?.length) return;
 		this.target = target;
 		this.create();
 		const text = target.text().replace(/\u200B/g, '');
