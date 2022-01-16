@@ -5,6 +5,7 @@
             <div v-if="!!hotkeyText" class="toolbar-tooltip-hotkey" v-html="hotkeyText"></div>
         </template>
         <button 
+        ref="element"
         :class="['toolbar-button',className,{'toolbar-button-active': active,'toolbar-button-disabled':disabled}]" 
         @click="triggerClick" 
         @mousedown="triggerMouseDown" 
@@ -109,7 +110,7 @@ export default class Button extends Vue {
 </script>
 <style>
 .editor-toolbar .toolbar-button {
-    display: inline-block;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     width: auto;
@@ -124,7 +125,6 @@ export default class Button extends Vue {
     cursor: pointer;
     color: #595959;
     outline: none;
-    line-height: 32px;
 }
 .editor-toolbar.editor-toolbar-popup .toolbar-button {
     min-width: 24px;

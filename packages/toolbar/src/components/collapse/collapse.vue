@@ -54,7 +54,6 @@ export default class AmCollapse extends Vue  {
 
     isCustomize = false
     visible = false
-    collapse: HTMLElement | null = null
     isRight = false
 
     show(){
@@ -81,8 +80,8 @@ export default class AmCollapse extends Vue  {
     mounted(){
         this.isCustomize = !(this.icon || this.content);
         this.visible = this.isCustomize
-        if (this.collapse && isMobile) {
-			const rect = this.collapse.getBoundingClientRect();
+        if (this.$refs.collapse && isMobile) {
+			const rect = (this.$refs.collapse as Element).getBoundingClientRect();
 			this.isRight = rect.left > window.visualViewport.width / 2;
 		}
     }

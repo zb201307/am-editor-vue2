@@ -57,7 +57,6 @@ export default class LinkEditor extends Vue {
 
     text = ''
     link = ''    
-    linkRef: HTMLElement | null = null
     textTitle = ''
     textPlaceholder = ''
     linkTitle = ''
@@ -71,11 +70,11 @@ export default class LinkEditor extends Vue {
         this.textPlaceholder = this.language.get<string>('link', 'text_placeholder')
         this.linkTitle = this.language.get<string>('link', 'link')
         this.linkPlaceholder = this.language.get<string>('link', 'link_placeholder')
-        this.buttonTitle = this.language.get<string>('link', 'ok_button')
+        this.buttonTitle = this.language.get<string>('link', 'ok_button');
 
-        if (this.onLoad) this.onLoad();
         setTimeout(() => {
-            this.linkRef?.focus();
+            (this.$refs.linkRef as HTMLInputElement)?.focus();
+            if (this.onLoad) this.onLoad();
         }, 200);
     }
     

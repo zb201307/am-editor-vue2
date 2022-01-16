@@ -22,6 +22,7 @@
             :on-click="toggleDropdown"
             :placement="placement"
             :disabled="disabled"
+            ref="targetRef"
             >
                 <template #icon>
                     <span class="colorpicker-button-dropdown-empty" />
@@ -43,7 +44,7 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { EngineInterface, isMobile, Placement } from "@aomao/engine";
+import { EngineInterface, isMobile, Placement, $ } from "@aomao/engine";
 import AmButton from '../button.vue'
 import AmColorPicker from './picker/picker.vue'
 import Palette from './picker/palette';
@@ -73,14 +74,13 @@ export default class AmColor extends Vue {
     @Prop({ type: [String], default: undefined}) placement?: Placement
 
     visible = false
-    buttonRef: HTMLDivElement | null = null
     isRight = false
     currentColor = ""
     buttonContent?: string = ''
 
     mounted(){
-        if (this.buttonRef && isMobile) {
-			const rect = this.buttonRef.getBoundingClientRect();
+        if (this.$refs.buttonRef && isMobile) {
+			const rect = (this.$refs.buttonRef as Element).getBoundingClientRect();
 			this.isRight = rect.left > window.visualViewport.width / 2;
 		}
         this.currentColor = this.defaultActiveColor
@@ -89,7 +89,7 @@ export default class AmColor extends Vue {
     unmounted(){
         document.removeEventListener('click', this.hideDropdown)
     }
-
+    @Watch("currentColor", { immediate: true, deep: true })
     @Watch("$props.disabled", { immediate: true, deep: true })
     getContent(){
         this.buttonContent = typeof this.content === 'string'
@@ -111,24 +111,26 @@ export default class AmColor extends Vue {
     };
 
     showDropdown(){
-        setTimeout(() => {
-            document.addEventListener('click', this.hideDropdown);
-        }, 10);
         this.visible = true
     };
 
     hideDropdown(event?: MouseEvent){
-        if (event && (event.target as Element).closest('.toolbar-dropdown-list'))
-            return;
-        document.removeEventListener('click', this.hideDropdown);
+        if(event && this.$refs.targetRef && ((this.$refs.targetRef as Vue).$refs.element as Element).contains(event.target as Node)) return;
         this.visible = false
     };
+
+    @Watch("visible", { immediate: true, deep: true })
+    watch(value: boolean){
+        if(value) document.addEventListener('click', this.hideDropdown);
+        else document.removeEventListener('click', this.hideDropdown);
+    }
 
     triggerClick(event:MouseEvent){
         this.triggerSelect(this.currentColor,event)
     }
 
     triggerSelect (color: string, event: MouseEvent){
+        this.hideDropdown()
         this.currentColor = color;
         this.buttonContent = typeof this.content === 'string'
                 ? this.content
@@ -173,6 +175,7 @@ export default class AmColor extends Vue {
 .editor-toolbar.editor-toolbar-popup .colorpicker-button-group .colorpicker-button-text {
     margin: 0;
     border-radius: 3px 0 0 3px;
+    display: block;
 }
 
 .colorpicker-button-group .colorpicker-button-dropdown {
@@ -181,6 +184,7 @@ export default class AmColor extends Vue {
     text-align: center;
     padding: 0 0;
     border-radius: 0 3px 3px 0;
+    display: block;
 }
 
 .editor-toolbar.editor-toolbar-popup .colorpicker-button-group .colorpicker-button-dropdown {

@@ -109,11 +109,7 @@ export const cards: Array<CardEntry> = [
   MapComponent,
   AudioComponent,
 ];
-let engine: EngineInterface | null = null;
 
-export const onLoad = (e: EngineInterface) => {
-  engine = e;
-};
 export const pluginConfig: { [key: string]: PluginOptions } = {
   [Italic.pluginName]: {
     // 默认为 _ 下划线，这里修改为单个 * 号
@@ -237,10 +233,10 @@ export const pluginConfig: { [key: string]: PluginOptions } = {
   toolbar: {
     popup: {
       items: [
-        ["undo", "redo"],
+        ["bold", "strikethrough", "fontcolor"],
         {
           icon: "text",
-          items: ["bold", "italic", "strikethrough", "underline", "moremark"],
+          items: ["italic", "underline", "backcolor", "moremark"],
         },
         [
           {
@@ -264,11 +260,6 @@ export const pluginConfig: { [key: string]: PluginOptions } = {
               type: "button",
               name: "file-uploader",
               icon: "attachment",
-            },
-            {
-              type: "button",
-              name: "table",
-              icon: "table",
             },
             {
               type: "button",

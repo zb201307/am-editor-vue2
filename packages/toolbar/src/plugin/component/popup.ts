@@ -81,9 +81,14 @@ export default class Popup {
 		}
 		const topRange = subRanges[0];
 		const bottomRange = subRanges[subRanges.length - 1];
-		const topRect = topRange.getBoundingClientRect();
-		const bottomRect = bottomRange.getBoundingClientRect();
-
+		const topRect = topRange
+		.cloneRange()
+		.collapse(true)
+		.getBoundingClientRect();
+	const bottomRect = bottomRange
+		.cloneRange()
+		.collapse(false)
+		.getBoundingClientRect();
 		let rootRect: DOMRect | undefined = undefined;
 		this.showContent(() => {
 			rootRect = this.#root.get<HTMLElement>()?.getBoundingClientRect();
@@ -93,7 +98,8 @@ export default class Popup {
 			}
 			this.#align =
 				bottomRange.startNode.equal(selection.focusNode!) &&
-				!topRange.startNode.equal(selection.focusNode!)
+				(!topRange.startNode.equal(selection.focusNode!) ||
+					selection.focusOffset > selection.anchorOffset)
 					? 'bottom'
 					: 'top';
 			const space = 12;
@@ -129,19 +135,26 @@ export default class Popup {
 
 	showContent(callback?: () => void) {
 		const result = this.#editor.trigger('toolbar-render', this.#options);
-		if (this.#vm) this.#vm.$destroy();
-		this.#vm = new Vue({ 
-			render: (h) => {
-				return h(typeof result === 'object' ? result : Toolbar, {
-					props: {
-						...this.#options,
-						engine: this.#editor,
-						popup: true,
-					}
-				})
-			}
-		})
-		this.#root.empty().append(this.#vm.$mount().$el)
+		let content = Toolbar;
+		if (typeof result === 'object') {
+			this.#vm?.$destroy();
+			this.#vm = undefined;
+			content = result;
+		}
+		if (!this.#vm) {
+			this.#vm = new Vue({ 
+				render: (h) => {
+					return h(content, {
+						props: {
+							...this.#options,
+							engine: this.#editor,
+							popup: true,
+						}
+					})
+				}
+			})
+			this.#root.empty().append(this.#vm.$mount().$el)
+		}
 		setTimeout(() => {
 			if (callback) callback();
 		}, 200);
@@ -172,7 +185,10 @@ export default class Popup {
 		window.removeEventListener('resize', this.onSelect);
 		this.#editor.scrollNode?.off('scroll', this.onSelect);
 		document.removeEventListener('mousedown', this.hide);
-		if (this.#vm) this.#vm.$destroy();
+		if (this.#vm) {
+			this.#vm.$destroy();
+			this.#vm = undefined
+		}
 	}
 }
 export type { GroupItemProps };

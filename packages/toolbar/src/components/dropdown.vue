@@ -17,6 +17,7 @@
             :title="title"
             :active="visible"
             :disabled="disabled"
+            ref="targetRef"
             >
                 <template #default>
                     <slot :item="content">
@@ -70,13 +71,12 @@ export default class Dropdown extends Vue {
     @Prop({ type: [String], default: undefined}) placement?: Placement
     valuesVar: string | number | string[] = ""
     buttonContent?: DropdownListItem | {icon?:string,content?:string} | null = null
-    buttonRef: HTMLElement | null = null
     isRight = false
     visible = false
 
     mounted(){
-        if (this.buttonRef && isMobile) {
-			const rect = this.buttonRef.getBoundingClientRect();
+        if (this.$refs.buttonRef && isMobile) {
+			const rect = (this.$refs.buttonRef as Element).getBoundingClientRect();
 			this.isRight = rect.left > window.visualViewport.width / 2;
 		}
     }
@@ -118,6 +118,12 @@ export default class Dropdown extends Vue {
                     (this.icon || this.content ? '' : defaultItem?.key || '')
     }
 
+    @Watch("visible", { immediate: true, deep: true })
+    watch(value: boolean){
+        if(value) document.addEventListener('click', this.hide);
+        else document.removeEventListener('click', this.hide);
+    }
+
     triggerMouseDown(event: MouseEvent){
         event.preventDefault();
     }
@@ -135,14 +141,11 @@ export default class Dropdown extends Vue {
     }
 
     show(){
-        setTimeout(() => {
-            document.addEventListener('click', this.hide);
-        }, 10);
         this.visible = true
     }
 
-    hide(){
-        document.removeEventListener('click', this.hide);
+    hide(event?: MouseEvent){
+        if(event && this.$refs.targetRef && ((this.$refs.targetRef as Vue).$refs.element as Element).contains(event.target as Node)) return;
         this.visible = false
     }
 
@@ -158,7 +161,9 @@ export default class Dropdown extends Vue {
 }
 
 .toolbar-dropdown .toolbar-dropdown-trigger {
-    align-items: center;
+    display: flex;
+    align-items: stretch;
+    height: 100%;
 }
 
 .toolbar-dropdown .toolbar-dropdown-trigger .toolbar-dropdown-button-text {

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { CARD_SELECTOR, EngineInterface } from '@aomao/engine';
+import { EngineInterface } from '@aomao/engine';
 import { ToolbarItemProps } from '../types';
 import TableSelector from '../components/table.vue';
 import fontfamily, { defaultData as fontFamilyDefaultData } from './fontfamily';
@@ -725,7 +725,7 @@ export const getToolbarDefaultConfig = (
 				return (
 					(!!cardComponent &&
 						!cardComponent.isCursor(range.startNode)) ||
-					range.commonAncestorNode.find(CARD_SELECTOR).length > 0 ||
+						range.containsCard() ||
 					!engine.command.queryEnabled('link')
 				);
 			},
