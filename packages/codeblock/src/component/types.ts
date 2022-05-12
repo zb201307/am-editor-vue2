@@ -2,6 +2,7 @@ import { Editor, EditorConfiguration } from 'codemirror';
 import { EditorInterface, NodeInterface } from '@aomao/engine';
 
 export type Options = {
+	styleMap?: Record<string, string>;
 	onSave?: (mode: string, value: string) => void;
 	onFocus?: () => void;
 	onBlur?: () => void;
@@ -49,4 +50,5 @@ export interface CodeBlockEditorInterface {
 		callback: any,
 		options: any,
 	): void;
+	destroy(): void;
 }
