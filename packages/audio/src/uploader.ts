@@ -168,7 +168,7 @@ export default class extends Plugin<Options> {
         headers,
         onBefore: (file) => {
           if (file.size > limitSize) {
-            this.editor.messageError(
+            this.editor.messageError('upload-limit',
               language
                 .get("audio", "uploadLimitError")
                 .toString()

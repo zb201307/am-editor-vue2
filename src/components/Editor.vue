@@ -168,15 +168,18 @@ export default class Editor extends Vue {
         config: pluginConfig,
       });
       // 设置显示成功消息UI，默认使用 console.log
-      engine.messageSuccess = (msg) => {
+      engine.messageSuccess = (type: string, msg: string, ...args: any[]) => {
+        console.error(type, msg, ...args);
         message.success(msg);
       };
       // 设置显示错误消息UI，默认使用 console.error
-      engine.messageError = (error) => {
+      engine.messageError = (type: string, error: string, ...args: any[]) => {
+        console.error(type, error, ...args);
         message.error(error);
       };
       // 设置显示确认消息UI，默认无
-      engine.messageConfirm = (msg) => {
+      engine.messageConfirm = (type: string, msg: string, ...args: any[]) => {
+        console.error(type, msg, ...args);
         return new Promise<boolean>((resolve, reject) => {
           Modal.confirm({
             content: msg,
