@@ -1,8 +1,10 @@
 <template>
   <div
+  ref="elementRef"
     :class="[
       'toolbar-dropdown-list',
       `toolbar-dropdown-${direction || 'vertical'}`,
+      {[`toolbar-dropdown-placement-${placement}`] : !!placement},
       { 'toolbar-dropdown-dot': hasDot !== false },
       className,
     ]"
@@ -80,6 +82,7 @@ export default class DropdownList extends Vue {
 
   hotkeys: { [x: string]: string | boolean | undefined } = {};
   isMobile = false;
+  placement = "";
   getHotkey(item: DropdownListItem) {
     const { command, key } = item;
     let { hotkey } = item;
@@ -102,6 +105,15 @@ export default class DropdownList extends Vue {
       this.hotkeys[item.key] = this.getHotkey(item);
     });
     this.isMobile = isMobile;
+
+    const current = this.$refs.elementRef;
+		if (!current) return;
+		const scrollElement = this.engine?.scrollNode?.get<HTMLElement>();
+		if (!scrollElement) return;
+		const rect = (current as Element).getBoundingClientRect();
+		const scrollRect = scrollElement.getBoundingClientRect();
+		if (rect.top < scrollRect.top) this.placement = 'bottom'
+		if (rect.bottom > scrollRect.bottom) this.placement = 'top'
   }
 
   triggerSelect(event: MouseEvent, key: string) {
