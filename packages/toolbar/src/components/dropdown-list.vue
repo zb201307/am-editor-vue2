@@ -17,12 +17,13 @@
         content,
         className,
         icon,
+        hotkey,
         disabled,
       } in items"
       :key="key"
       :placement="placement || 'right'"
     >
-      <template #title v-if="(!!title || !!hotkeys[key]) && !isMobile">
+      <template #title v-if="(!!title || hotkey !== false) && !isMobile">
         <div v-if="!!title" class="toolbar-tooltip-title">{{ title }}</div>
         <div
           v-if="!!hotkeys[key]"
