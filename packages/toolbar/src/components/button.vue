@@ -2,7 +2,6 @@
     <a-tooltip :placement="placement || 'bottom'" :visible="(!!title || !!hotkeyText) && !isMobile ? visible : false">
         <template #title>
             <div v-if="!!title" class="toolbar-tooltip-title">{{title}}</div>
-            
             <div v-if="!!hotkeyText" class="toolbar-tooltip-hotkey" v-html="hotkeyText"></div>
         </template>
         <button 
