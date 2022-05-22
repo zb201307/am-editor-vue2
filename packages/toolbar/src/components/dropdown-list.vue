@@ -1,10 +1,10 @@
 <template>
   <div
-  ref="elementRef"
+    ref="elementRef"
     :class="[
       'toolbar-dropdown-list',
       `toolbar-dropdown-${direction || 'vertical'}`,
-      {[`toolbar-dropdown-placement-${placement}`] : !!placement},
+      { [`toolbar-dropdown-placement-${placement}`]: !!placement },
       { 'toolbar-dropdown-dot': hasDot !== false },
       className,
     ]"
@@ -105,13 +105,13 @@ export default class DropdownList extends Vue {
     this.isMobile = isMobile;
 
     const current = this.$refs.elementRef;
-		if (!current) return;
-		const scrollElement = this.engine?.scrollNode?.get<HTMLElement>();
-		if (!scrollElement) return;
-		const rect = (current as Element).getBoundingClientRect();
-		const scrollRect = scrollElement.getBoundingClientRect();
-		if (rect.top < scrollRect.top) this.placement = 'bottom'
-		if (rect.bottom > scrollRect.bottom) this.placement = 'top'
+    if (!current) return;
+    const scrollElement = this.engine?.scrollNode?.get<HTMLElement>();
+    if (!scrollElement) return;
+    const rect = (current as Element).getBoundingClientRect();
+    const scrollRect = scrollElement.getBoundingClientRect();
+    if (rect.top < scrollRect.top) this.placement = "bottom";
+    if (rect.bottom > scrollRect.bottom) this.placement = "top";
   }
 
   triggerSelect(event: MouseEvent, key: string) {

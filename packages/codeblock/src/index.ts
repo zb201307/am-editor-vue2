@@ -193,6 +193,7 @@ export default class<
 				});
 				const codeEditor = new CodeBlockEditor(this.editor, {
 					synatxMap,
+					styleMap: this.options.styleMap,
 				});
 
 				const content = codeEditor.container.find(
