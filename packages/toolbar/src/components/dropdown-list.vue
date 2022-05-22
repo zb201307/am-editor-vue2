@@ -14,8 +14,6 @@
         key,
         placement,
         title,
-        direction,
-        hasDot,
         content,
         className,
         icon,

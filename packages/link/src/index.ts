@@ -3,9 +3,9 @@ import {
   NodeInterface,
   InlinePlugin,
   isEngine,
-  PluginEntry,
   PluginOptions,
 } from "@aomao/engine";
+import type MarkdownIt from 'markdown-it';
 import Toolbar from "./toolbar";
 import locales from "./locales";
 
@@ -51,6 +51,7 @@ export default class<
       this.toolbar = new Toolbar(editor, {
         onConfirm: this.options.onConfirm,
       });
+      this.editor.on('markdown-it', this.markdownIt);
     }
     editor.on("paste:each", this.pasteHtml);
     editor.on("parse:html", this.parseHtml);
@@ -117,82 +118,12 @@ export default class<
   queryState() {
     return this.query();
   }
-
-  triggerMarkdown(event: KeyboardEvent, text: string, node: NodeInterface) {
-    const editor = this.editor;
-    if (!isEngine(editor) || !this.markdown) return;
-    const match = new RegExp(this.markdown).exec(text);
-    if (match) {
-      const { command } = editor;
-      event.preventDefault();
-      const text = match[2];
-      const url = match[3];
-      // 移除 markdown 语法
-      const markdownTextNode = node
-        .get<Text>()!
-        .splitText(match.index + match[1].length);
-      markdownTextNode.splitText(match[0].length - match[1].length);
-      $(markdownTextNode).remove();
-      command.execute(
-        (this.constructor as PluginEntry).pluginName,
-        "_blank",
-        url,
-        text
-      );
-      editor.node.insertText("\xA0");
-      return false;
-    }
-    return;
-  }
-
-  checkMarkdown = (node: NodeInterface) => {
-    if (!isEngine(this.editor) || !this.markdown || !node.isText()) return;
-
-    const text = node.text();
-    if (!text) return;
-
-    const reg = /(\[(.+?)\]\(\s*([\S]+?)\s*\))/;
-    const match = reg.exec(text);
-    return {
-      reg,
-      match,
-    };
-  };
-
-  pasteMarkdown = (node: NodeInterface) => {
-    const result = this.checkMarkdown(node);
-    if (!result) return;
-    const { reg } = result;
-		let { match } = result;
-    if (!match) return;
-
-    let newText = "";
-    let textNode = node.clone(true).get<Text>()!;
-    while (textNode.textContent && (match = reg.exec(textNode.textContent))) {
-      //从匹配到的位置切断
-      const regNode = textNode.splitText(match.index);
-      if (textNode.textContent.endsWith("!") || match[2].startsWith("!")) {
-        newText += textNode.textContent;
-        textNode = regNode.splitText(match[0].length);
-        newText += regNode.textContent;
-        continue;
-      }
-      newText += textNode.textContent;
-      //从匹配结束位置分割
-      textNode = regNode.splitText(match[0].length);
-
-      const text = match[2];
-      const url = match[3];
-
-      const inlineNode = $(`<${this.tagName} />`);
-      this.setAttributes(inlineNode, "_blank", (url || "").trim());
-      inlineNode.html(text ? text : url);
-
-      newText += inlineNode.get<Element>()?.outerHTML;
-    }
-    newText += textNode.textContent;
-    node.text(newText);
-  };
+  markdownIt = (mardown: MarkdownIt) => {
+		if (this.options.markdown !== false) {
+			mardown.enable('link');
+			mardown.enable('linkify');
+		}
+	};
 
   parseHtml = (root: NodeInterface) => {
     root.find(this.tagName).css({
