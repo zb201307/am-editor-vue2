@@ -13,7 +13,7 @@ import "./index.css";
 
 export interface LinkOptions extends PluginOptions {
   hotkey?: string | Array<string>;
-  markdown?: string;
+  markdown?: boolean;
 }
 export default class<
   T extends LinkOptions = LinkOptions
@@ -38,11 +38,6 @@ export default class<
   };
 
   tagName = "a";
-
-  markdown =
-    this.options.markdown === undefined
-      ? "([^!]|^)\\[(.+?)\\]\\(\\s*([\\S]+?)\\s*\\)$"
-      : this.options.markdown;
 
   init() {
     super.init();
@@ -160,9 +155,9 @@ export default class<
   };
 
   destroy(): void {
-    super.destroy();
     this.editor.off("paste:each", this.pasteHtml);
     this.editor.off("parse:html", this.parseHtml);
     this.editor.off("select", this.bindQuery);
+    this.editor.off('markdown-it', this.markdownIt);
   }
 }
