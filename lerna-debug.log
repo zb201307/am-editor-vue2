@@ -1,13 +1,7 @@
-15 error Error: Command failed with exit code 1: git remote update
-15 error ssh_dispatch_run_fatal: Connection to 20.205.243.166 port 22: Operation timed out
-15 error fatal: 无法读取远程仓库。
-15 error
-15 error 请确认您有正确的访问权限并且仓库存在。
-15 error error: 不能获取 origin
-15 error 正在获取 origin
-15 error     at makeError (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/child-process/node_modules/execa/lib/error.js:60:11)
-15 error     at Function.module.exports.sync (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/child-process/node_modules/execa/index.js:194:17)
-15 error     at Object.execSync (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/child-process/index.js:39:16)
-15 error     at updateRemote (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/version/lib/is-behind-upstream.js:34:16)
-15 error     at isBehindUpstream (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/version/lib/is-behind-upstream.js:16:3)
-15 error     at VersionCommand.initialize (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/version/index.js:153:9)
+63 error Error: Command failed with exit code 128: git push --follow-tags --no-verify --atomic origin main
+63 error client_loop: send disconnect: Broken pipe
+63 error fatal: 无法读取远程仓库。
+63 error
+63 error 请确认您有正确的访问权限并且仓库存在。
+63 error     at makeError (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/child-process/node_modules/execa/lib/error.js:60:11)
+63 error     at handlePromise (/Users/zhangbin/work/am-editor-vue2/node_modules/@lerna/child-process/node_modules/execa/index.js:118:26)
