@@ -12,6 +12,7 @@
                 />
             </p>
             <p>{{linkTitle}}</p>
+            
             <p>
                 <a-input
                 ref="linkRef"

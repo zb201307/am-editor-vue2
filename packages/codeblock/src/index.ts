@@ -31,6 +31,7 @@ export default class<
 
 	init() {
 		this.editor.language.add(locales);
+		
 		this.editor.on('parse:html', (node) => this.parseHtml(node));
 		this.editor.on('paste:schema', (schema) => this.pasteSchema(schema));
 		this.editor.on('paste:each', (child) => this.pasteHtml(child));

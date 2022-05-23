@@ -46,6 +46,7 @@ export default class<
 
   init() {
     super.init();
+    
     const editor = this.editor;
     if (isEngine(editor)) {
       this.toolbar = new Toolbar(editor, {
