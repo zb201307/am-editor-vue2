@@ -14,7 +14,7 @@ import CodeBlockEditor from "./editor";
 import renderSelect from "./select";
 import modeDatas from "./mode";
 import { CodeBlockEditorInterface } from "./types";
-import { CodeBlockOptions } from "@/types";
+import { CodeBlockOptions } from "../types";
 import "./index.css";
 
 export interface CodeBlockValue extends CardValue {
