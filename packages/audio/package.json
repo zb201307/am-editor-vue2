@@ -22,5 +22,6 @@
     "dependencies": {
         "@aomao/engine": "^2.9.4",
         "@babel/runtime": "^7.13.10"
-    }
+    },
+    "gitHead": "e09b141d8489b5a424fdce6029d329ab22a6e37b"
 }

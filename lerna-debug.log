@@ -7,7 +7,7 @@
 1 notice cli v4.0.0
 2 verbose rootPath /Users/zhangbin/work/am-editor-vue2
 3 info versioning independent
-4 verbose session c595b182bb7d8739
+4 verbose session 72d683fa6cc24609
 5 verbose user-agent lerna/4.0.0/node@v12.18.2+x64 (darwin)
 6 silly argv { _: [ 'publish' ], composed: 'publish', lernaVersion: '4.0.0' }
 7 verbose rootPath /Users/zhangbin/work/am-editor-vue2
@@ -20,8 +20,8 @@
 14 silly isBehindUpstream main is behind origin/main by 0 commit(s) and ahead by 0
 15 silly hasTags
 16 verbose hasTags true
-17 silly git-describe.sync "am-editor-toolbar-vue2@1.1.5-1-ga1cd788" => {"lastTagName":"am-editor-toolbar-vue2@1.1.5","lastVersion":"1.1.5","refCount":"1","sha":"a1cd788","isDirty":false}
-18 info Looking for changed packages since am-editor-toolbar-vue2@1.1.5
+17 silly git-describe.sync "am-editor-codeblock-vue2@1.1.3-3-gc2ebdd2" => {"lastTagName":"am-editor-codeblock-vue2@1.1.3","lastVersion":"1.1.3","refCount":"3","sha":"c2ebdd2","isDirty":false}
+18 info Looking for changed packages since am-editor-codeblock-vue2@1.1.3
 19 info ignoring diff in paths matching [
 19 info ignoring diff in paths matching   '**/*.md',
 19 info ignoring diff in paths matching   '**/*.test.ts',
@@ -30,131 +30,187 @@
 19 info ignoring diff in paths matching   '**/test/**'
 19 info ignoring diff in paths matching ]
 20 silly checking diff packages/audio
-21 silly no diff found in am-editor-audio
-22 silly checking diff packages/codeblock
-23 silly found diff in packages/codeblock/src/component/select/component.vue
-23 silly found diff in packages/codeblock/src/index.ts
-24 verbose filtered diff [
-24 verbose filtered diff   'packages/codeblock/src/component/select/component.vue',
-24 verbose filtered diff   'packages/codeblock/src/index.ts'
-24 verbose filtered diff ]
-25 silly checking diff packages/link
-26 silly found diff in packages/link/src/index.ts
-26 silly found diff in packages/link/src/toolbar/editor.vue
-27 verbose filtered diff [
-27 verbose filtered diff   'packages/link/src/index.ts',
-27 verbose filtered diff   'packages/link/src/toolbar/editor.vue'
-27 verbose filtered diff ]
-28 silly checking diff packages/map
-29 silly no diff found in am-editor-map
-30 silly checking diff packages/toolbar
-31 silly no diff found in am-editor-toolbar-vue2
-32 verbose updated am-editor-codeblock-vue2
-33 verbose updated am-editor-link-vue2
-34 verbose git-describe undefined => "am-editor-toolbar-vue2@1.1.5-1-ga1cd788"
-35 silly git-describe parsed => {"lastTagName":"am-editor-toolbar-vue2@1.1.5","lastVersion":"1.1.5","refCount":"1","sha":"a1cd788","isDirty":false}
-36 info execute Skipping releases
-37 silly lifecycle No script for "preversion" in "am-editor-vue2", continuing
-38 silly lifecycle No script for "preversion" in "am-editor-codeblock-vue2", continuing
-39 silly lifecycle No script for "preversion" in "am-editor-link-vue2", continuing
-40 silly lifecycle No script for "version" in "am-editor-link-vue2", continuing
-41 silly lifecycle No script for "version" in "am-editor-codeblock-vue2", continuing
-42 silly lifecycle No script for "version" in "am-editor-vue2", continuing
-43 silly gitAdd [ 'packages/link/package.json', 'packages/codeblock/package.json' ]
-44 silly gitCommit Publish
-44 silly gitCommit
-44 silly gitCommit  - am-editor-codeblock-vue2@1.1.3
-44 silly gitCommit  - am-editor-link-vue2@1.1.3
-45 verbose git [
-45 verbose git   'commit',
-45 verbose git   '-F',
-45 verbose git   '/private/var/folders/nx/670lmgh97m1ccbkw92s36v4m0000gn/T/886e1b41-146a-4272-8803-e2b8563ebfb3/lerna-commit.txt'
-45 verbose git ]
-46 silly gitTag am-editor-codeblock-vue2@1.1.3
-47 verbose git [
-47 verbose git   'tag',
-47 verbose git   'am-editor-codeblock-vue2@1.1.3',
-47 verbose git   '-m',
-47 verbose git   'am-editor-codeblock-vue2@1.1.3'
-47 verbose git ]
-48 silly gitTag am-editor-link-vue2@1.1.3
-49 verbose git [
-49 verbose git   'tag',
-49 verbose git   'am-editor-link-vue2@1.1.3',
-49 verbose git   '-m',
-49 verbose git   'am-editor-link-vue2@1.1.3'
-49 verbose git ]
-50 silly lifecycle No script for "postversion" in "am-editor-codeblock-vue2", continuing
-51 silly lifecycle No script for "postversion" in "am-editor-link-vue2", continuing
-52 silly lifecycle No script for "postversion" in "am-editor-vue2", continuing
-53 info git Pushing tags...
-54 silly gitPush origin main
-55 info publish Publishing packages to npm...
-56 info Verifying npm credentials
-57 verbose Retrieving npm user profile
-58 warn registry Unexpected warning for https://registry.npmjs.org/: Miscellaneous Warning ETIMEDOUT: request to https://registry.npmjs.org/-/npm/v1/user failed, reason: connect ETIMEDOUT 104.16.22.35:443
-59 warn registry Using stale data from https://registry.npmjs.org/ due to a request error during revalidation.
-60 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 75167ms (from cache)
-61 silly npm profile get received {"tfa":false,"name":"gavin2017","email":"bjzhang.bin@163.com","email_verified":true,"created":"2017-06-02T03:21:00.790Z","updated":"2021-10-22T07:16:11.263Z","cidr_whitelist":null}
-62 silly get npm username received {"username":"gavin2017","tfa":false,"name":"gavin2017","email":"bjzhang.bin@163.com","email_verified":true,"created":"2017-06-02T03:21:00.790Z","updated":"2021-10-22T07:16:11.263Z","cidr_whitelist":null}
-63 silly verifyNpmPackageAccess
-64 http fetch GET 200 https://registry.npmjs.org/-/org/gavin2017/package?format=cli 75121ms (cache stale)
-65 info Checking two-factor auth mode
-66 verbose Retrieving npm user profile
-67 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 75092ms (from cache)
-68 silly npm profile get received {"tfa":false,"name":"gavin2017","email":"bjzhang.bin@163.com","email_verified":true,"created":"2017-06-02T03:21:00.790Z","updated":"2021-10-22T07:16:11.263Z","cidr_whitelist":null}
-69 silly 2FA false
-70 silly getCurrentSHA
-71 verbose getCurrentSHA 57a6f322734f273f8fa3d738bcead21897290990
-72 silly lifecycle No script for "prepublish" in "am-editor-vue2", continuing
-73 silly lifecycle No script for "prepare" in "am-editor-vue2", continuing
-74 silly lifecycle No script for "prepublishOnly" in "am-editor-vue2", continuing
-75 silly lifecycle No script for "prepack" in "am-editor-vue2", continuing
-76 verbose pack-directory packages/codeblock
-77 verbose pack-directory packages/link
-78 silly lifecycle No script for "prepublish" in "am-editor-codeblock-vue2", continuing
-79 silly lifecycle No script for "prepublish" in "am-editor-link-vue2", continuing
-80 silly lifecycle No script for "prepare" in "am-editor-codeblock-vue2", continuing
-81 silly lifecycle No script for "prepare" in "am-editor-link-vue2", continuing
-82 silly lifecycle No script for "prepublishOnly" in "am-editor-codeblock-vue2", continuing
-83 silly lifecycle No script for "prepublishOnly" in "am-editor-link-vue2", continuing
-84 silly lifecycle No script for "prepack" in "am-editor-codeblock-vue2", continuing
-85 silly lifecycle No script for "prepack" in "am-editor-link-vue2", continuing
-86 silly lifecycle No script for "postpack" in "am-editor-codeblock-vue2", continuing
-87 verbose packed packages/codeblock
-88 silly lifecycle No script for "postpack" in "am-editor-link-vue2", continuing
-89 verbose packed packages/link
-90 silly lifecycle No script for "postpack" in "am-editor-vue2", continuing
-91 verbose publish am-editor-codeblock-vue2
-92 verbose publish am-editor-link-vue2
-93 silly FetchError: request to https://registry.npmjs.org/am-editor-codeblock-vue2 failed, reason: connect ETIMEDOUT 104.16.22.35:443
-93 silly     at ClientRequest.<anonymous> (/Users/zhangbin/work/am-editor-vue2/node_modules/minipass-fetch/lib/index.js:110:14)
-93 silly     at ClientRequest.emit (events.js:315:20)
-93 silly     at TLSSocket.socketErrorListener (_http_client.js:426:9)
-93 silly     at TLSSocket.emit (events.js:327:22)
-93 silly     at emitErrorNT (internal/streams/destroy.js:92:8)
-93 silly     at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
-93 silly     at processTicksAndRejections (internal/process/task_queues.js:84:21)
-93 silly  FetchError: request to https://registry.npmjs.org/am-editor-codeblock-vue2 failed, reason: connect ETIMEDOUT 104.16.22.35:443
-93 silly     at ClientRequest.<anonymous> (/Users/zhangbin/work/am-editor-vue2/node_modules/minipass-fetch/lib/index.js:110:14)
-93 silly     at ClientRequest.emit (events.js:315:20)
-93 silly     at TLSSocket.socketErrorListener (_http_client.js:426:9)
-93 silly     at TLSSocket.emit (events.js:327:22)
-93 silly     at emitErrorNT (internal/streams/destroy.js:92:8)
-93 silly     at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
-93 silly     at processTicksAndRejections (internal/process/task_queues.js:84:21) {
-93 silly   code: 'ETIMEDOUT',
-93 silly   errno: 'ETIMEDOUT',
-93 silly   syscall: 'connect',
-93 silly   address: '104.16.22.35',
-93 silly   port: 443,
-93 silly   type: 'system'
-93 silly }
-94 error ETIMEDOUT request to https://registry.npmjs.org/am-editor-codeblock-vue2 failed, reason: connect ETIMEDOUT 104.16.22.35:443
-95 error FetchError: request to https://registry.npmjs.org/am-editor-codeblock-vue2 failed, reason: connect ETIMEDOUT 104.16.22.35:443
-95 error     at ClientRequest.<anonymous> (/Users/zhangbin/work/am-editor-vue2/node_modules/minipass-fetch/lib/index.js:110:14)
-95 error     at ClientRequest.emit (events.js:315:20)
-95 error     at TLSSocket.socketErrorListener (_http_client.js:426:9)
-95 error     at TLSSocket.emit (events.js:327:22)
-95 error     at emitErrorNT (internal/streams/destroy.js:92:8)
-95 error     at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
+21 silly found diff in packages/audio/package.json
+22 verbose filtered diff [ 'packages/audio/package.json' ]
+23 silly checking diff packages/codeblock
+24 silly found diff in packages/codeblock/package.json
+24 silly found diff in packages/codeblock/src/component/index.ts
+25 verbose filtered diff [
+25 verbose filtered diff   'packages/codeblock/package.json',
+25 verbose filtered diff   'packages/codeblock/src/component/index.ts'
+25 verbose filtered diff ]
+26 silly checking diff packages/link
+27 silly found diff in packages/link/package.json
+27 silly found diff in packages/link/src/index.ts
+28 verbose filtered diff [ 'packages/link/package.json', 'packages/link/src/index.ts' ]
+29 silly checking diff packages/map
+30 silly found diff in packages/map/package.json
+31 verbose filtered diff [ 'packages/map/package.json' ]
+32 silly checking diff packages/toolbar
+33 silly found diff in packages/toolbar/package.json
+34 verbose filtered diff [ 'packages/toolbar/package.json' ]
+35 verbose updated am-editor-audio
+36 verbose updated am-editor-codeblock-vue2
+37 verbose updated am-editor-link-vue2
+38 verbose updated am-editor-map
+39 verbose updated am-editor-toolbar-vue2
+40 verbose git-describe undefined => "am-editor-codeblock-vue2@1.1.3-3-gc2ebdd2"
+41 silly git-describe parsed => {"lastTagName":"am-editor-codeblock-vue2@1.1.3","lastVersion":"1.1.3","refCount":"3","sha":"c2ebdd2","isDirty":false}
+42 info execute Skipping releases
+43 silly lifecycle No script for "preversion" in "am-editor-vue2", continuing
+44 silly lifecycle No script for "preversion" in "am-editor-audio", continuing
+45 silly lifecycle No script for "preversion" in "am-editor-codeblock-vue2", continuing
+46 silly lifecycle No script for "preversion" in "am-editor-link-vue2", continuing
+47 silly lifecycle No script for "preversion" in "am-editor-map", continuing
+48 silly lifecycle No script for "preversion" in "am-editor-toolbar-vue2", continuing
+49 silly lifecycle No script for "version" in "am-editor-toolbar-vue2", continuing
+50 silly lifecycle No script for "version" in "am-editor-codeblock-vue2", continuing
+51 silly lifecycle No script for "version" in "am-editor-link-vue2", continuing
+52 silly lifecycle No script for "version" in "am-editor-audio", continuing
+53 silly lifecycle No script for "version" in "am-editor-map", continuing
+54 silly lifecycle No script for "version" in "am-editor-vue2", continuing
+55 silly gitAdd [
+55 silly gitAdd   'packages/toolbar/package.json',
+55 silly gitAdd   'packages/codeblock/package.json',
+55 silly gitAdd   'packages/link/package.json',
+55 silly gitAdd   'packages/audio/package.json',
+55 silly gitAdd   'packages/map/package.json'
+55 silly gitAdd ]
+56 silly gitCommit Publish
+56 silly gitCommit
+56 silly gitCommit  - am-editor-audio@1.1.2
+56 silly gitCommit  - am-editor-codeblock-vue2@1.1.4
+56 silly gitCommit  - am-editor-link-vue2@1.1.4
+56 silly gitCommit  - am-editor-map@1.1.2
+56 silly gitCommit  - am-editor-toolbar-vue2@1.1.6
+57 verbose git [
+57 verbose git   'commit',
+57 verbose git   '-F',
+57 verbose git   '/private/var/folders/nx/670lmgh97m1ccbkw92s36v4m0000gn/T/8c9ce339-2991-485b-b575-c3f666b9d4b1/lerna-commit.txt'
+57 verbose git ]
+58 silly gitTag am-editor-audio@1.1.2
+59 verbose git [ 'tag', 'am-editor-audio@1.1.2', '-m', 'am-editor-audio@1.1.2' ]
+60 silly gitTag am-editor-codeblock-vue2@1.1.4
+61 verbose git [
+61 verbose git   'tag',
+61 verbose git   'am-editor-codeblock-vue2@1.1.4',
+61 verbose git   '-m',
+61 verbose git   'am-editor-codeblock-vue2@1.1.4'
+61 verbose git ]
+62 silly gitTag am-editor-link-vue2@1.1.4
+63 verbose git [
+63 verbose git   'tag',
+63 verbose git   'am-editor-link-vue2@1.1.4',
+63 verbose git   '-m',
+63 verbose git   'am-editor-link-vue2@1.1.4'
+63 verbose git ]
+64 silly gitTag am-editor-map@1.1.2
+65 verbose git [ 'tag', 'am-editor-map@1.1.2', '-m', 'am-editor-map@1.1.2' ]
+66 silly gitTag am-editor-toolbar-vue2@1.1.6
+67 verbose git [
+67 verbose git   'tag',
+67 verbose git   'am-editor-toolbar-vue2@1.1.6',
+67 verbose git   '-m',
+67 verbose git   'am-editor-toolbar-vue2@1.1.6'
+67 verbose git ]
+68 silly lifecycle No script for "postversion" in "am-editor-audio", continuing
+69 silly lifecycle No script for "postversion" in "am-editor-codeblock-vue2", continuing
+70 silly lifecycle No script for "postversion" in "am-editor-link-vue2", continuing
+71 silly lifecycle No script for "postversion" in "am-editor-map", continuing
+72 silly lifecycle No script for "postversion" in "am-editor-toolbar-vue2", continuing
+73 silly lifecycle No script for "postversion" in "am-editor-vue2", continuing
+74 info git Pushing tags...
+75 silly gitPush origin main
+76 info publish Publishing packages to npm...
+77 info Verifying npm credentials
+78 verbose Retrieving npm user profile
+79 warn registry Unexpected warning for https://registry.npmjs.org/: Miscellaneous Warning ETIMEDOUT: request to https://registry.npmjs.org/-/npm/v1/user failed, reason: connect ETIMEDOUT 104.16.17.35:443
+80 warn registry Using stale data from https://registry.npmjs.org/ due to a request error during revalidation.
+81 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 75232ms (from cache)
+82 silly npm profile get received {"tfa":false,"name":"gavin2017","email":"bjzhang.bin@163.com","email_verified":true,"created":"2017-06-02T03:21:00.790Z","updated":"2021-10-22T07:16:11.263Z","cidr_whitelist":null}
+83 silly get npm username received {"username":"gavin2017","tfa":false,"name":"gavin2017","email":"bjzhang.bin@163.com","email_verified":true,"created":"2017-06-02T03:21:00.790Z","updated":"2021-10-22T07:16:11.263Z","cidr_whitelist":null}
+84 silly verifyNpmPackageAccess
+85 http fetch GET 200 https://registry.npmjs.org/-/org/gavin2017/package?format=cli 75390ms (cache stale)
+86 info Checking two-factor auth mode
+87 verbose Retrieving npm user profile
+88 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 75318ms (from cache)
+89 silly npm profile get received {"tfa":false,"name":"gavin2017","email":"bjzhang.bin@163.com","email_verified":true,"created":"2017-06-02T03:21:00.790Z","updated":"2021-10-22T07:16:11.263Z","cidr_whitelist":null}
+90 silly 2FA false
+91 silly getCurrentSHA
+92 verbose getCurrentSHA e09b141d8489b5a424fdce6029d329ab22a6e37b
+93 silly lifecycle No script for "prepublish" in "am-editor-vue2", continuing
+94 silly lifecycle No script for "prepare" in "am-editor-vue2", continuing
+95 silly lifecycle No script for "prepublishOnly" in "am-editor-vue2", continuing
+96 silly lifecycle No script for "prepack" in "am-editor-vue2", continuing
+97 verbose pack-directory packages/audio
+98 verbose pack-directory packages/codeblock
+99 verbose pack-directory packages/link
+100 verbose pack-directory packages/map
+101 verbose pack-directory packages/toolbar
+102 silly lifecycle No script for "prepublish" in "am-editor-audio", continuing
+103 silly lifecycle No script for "prepublish" in "am-editor-codeblock-vue2", continuing
+104 silly lifecycle No script for "prepublish" in "am-editor-link-vue2", continuing
+105 silly lifecycle No script for "prepublish" in "am-editor-map", continuing
+106 silly lifecycle No script for "prepublish" in "am-editor-toolbar-vue2", continuing
+107 silly lifecycle No script for "prepare" in "am-editor-audio", continuing
+108 silly lifecycle No script for "prepare" in "am-editor-codeblock-vue2", continuing
+109 silly lifecycle No script for "prepare" in "am-editor-link-vue2", continuing
+110 silly lifecycle No script for "prepare" in "am-editor-map", continuing
+111 silly lifecycle No script for "prepare" in "am-editor-toolbar-vue2", continuing
+112 silly lifecycle No script for "prepublishOnly" in "am-editor-map", continuing
+113 silly lifecycle No script for "prepublishOnly" in "am-editor-codeblock-vue2", continuing
+114 silly lifecycle No script for "prepublishOnly" in "am-editor-audio", continuing
+115 silly lifecycle No script for "prepublishOnly" in "am-editor-toolbar-vue2", continuing
+116 silly lifecycle No script for "prepublishOnly" in "am-editor-link-vue2", continuing
+117 silly lifecycle No script for "prepack" in "am-editor-codeblock-vue2", continuing
+118 silly lifecycle No script for "prepack" in "am-editor-toolbar-vue2", continuing
+119 silly lifecycle No script for "prepack" in "am-editor-audio", continuing
+120 silly lifecycle No script for "prepack" in "am-editor-map", continuing
+121 silly lifecycle No script for "prepack" in "am-editor-link-vue2", continuing
+122 silly lifecycle No script for "postpack" in "am-editor-map", continuing
+123 verbose packed packages/map
+124 silly lifecycle No script for "postpack" in "am-editor-audio", continuing
+125 verbose packed packages/audio
+126 silly lifecycle No script for "postpack" in "am-editor-link-vue2", continuing
+127 verbose packed packages/link
+128 silly lifecycle No script for "postpack" in "am-editor-codeblock-vue2", continuing
+129 verbose packed packages/codeblock
+130 silly lifecycle No script for "postpack" in "am-editor-toolbar-vue2", continuing
+131 verbose packed packages/toolbar
+132 silly lifecycle No script for "postpack" in "am-editor-vue2", continuing
+133 verbose publish am-editor-audio
+134 verbose publish am-editor-codeblock-vue2
+135 verbose publish am-editor-link-vue2
+136 verbose publish am-editor-map
+137 verbose publish am-editor-toolbar-vue2
+138 silly FetchError: request to https://registry.npmjs.org/am-editor-codeblock-vue2 failed, reason: connect ETIMEDOUT 104.16.26.35:443
+138 silly     at ClientRequest.<anonymous> (/Users/zhangbin/work/am-editor-vue2/node_modules/minipass-fetch/lib/index.js:110:14)
+138 silly     at ClientRequest.emit (events.js:315:20)
+138 silly     at TLSSocket.socketErrorListener (_http_client.js:426:9)
+138 silly     at TLSSocket.emit (events.js:327:22)
+138 silly     at emitErrorNT (internal/streams/destroy.js:92:8)
+138 silly     at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
+138 silly     at processTicksAndRejections (internal/process/task_queues.js:84:21)
+138 silly  FetchError: request to https://registry.npmjs.org/am-editor-codeblock-vue2 failed, reason: connect ETIMEDOUT 104.16.26.35:443
+138 silly     at ClientRequest.<anonymous> (/Users/zhangbin/work/am-editor-vue2/node_modules/minipass-fetch/lib/index.js:110:14)
+138 silly     at ClientRequest.emit (events.js:315:20)
+138 silly     at TLSSocket.socketErrorListener (_http_client.js:426:9)
+138 silly     at TLSSocket.emit (events.js:327:22)
+138 silly     at emitErrorNT (internal/streams/destroy.js:92:8)
+138 silly     at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
+138 silly     at processTicksAndRejections (internal/process/task_queues.js:84:21) {
+138 silly   code: 'ETIMEDOUT',
+138 silly   errno: 'ETIMEDOUT',
+138 silly   syscall: 'connect',
+138 silly   address: '104.16.26.35',
+138 silly   port: 443,
+138 silly   type: 'system'
+138 silly }
+139 error ETIMEDOUT request to https://registry.npmjs.org/am-editor-codeblock-vue2 failed, reason: connect ETIMEDOUT 104.16.26.35:443
+140 error FetchError: request to https://registry.npmjs.org/am-editor-codeblock-vue2 failed, reason: connect ETIMEDOUT 104.16.26.35:443
+140 error     at ClientRequest.<anonymous> (/Users/zhangbin/work/am-editor-vue2/node_modules/minipass-fetch/lib/index.js:110:14)
+140 error     at ClientRequest.emit (events.js:315:20)
+140 error     at TLSSocket.socketErrorListener (_http_client.js:426:9)
+140 error     at TLSSocket.emit (events.js:327:22)
+140 error     at emitErrorNT (internal/streams/destroy.js:92:8)
+140 error     at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
