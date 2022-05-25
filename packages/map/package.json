@@ -27,7 +27,7 @@
     "@babel/runtime": "^7.13.10",
     "autosize": "^5.0.1"
   },
-  "gitHead": "31c2d0667ab647f61c7b1f40f7234afb5697b7bb",
+  "gitHead": "e571a42ba486117126e4d564abf82142372e354d",
   "devDependencies": {
     "@types/autosize": "^4.0.0"
   }
