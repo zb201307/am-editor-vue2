@@ -135,7 +135,6 @@ class Toolbar {
             onLoad: () => {
               this.mouseInContainer = true;
               if (callback) callback();
-              this.engine.trigger("select");
             },
             onOk: (text: string, link: string) => this.onOk(text, link),
           },
@@ -235,8 +234,8 @@ class Toolbar {
         const { change, inline } = this.engine;
         const range = change.range.get();
         range.select(this.target, true);
-        change.range.select(range);
-        inline.unwrap();
+				inline.unwrap(range);
+				change.apply(range.collapse(true));
       }
       if (clearTarget !== false) this.target = undefined;
     }
