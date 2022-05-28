@@ -20,7 +20,7 @@
         "url": "https://github.com/yanmao-cc/am-editor/issues"
     },
     "dependencies": {
-        "@aomao/engine": "^2.9.4",
+        "@aomao/engine": "^2.9.8",
         "@babel/runtime": "^7.13.10"
     },
     "gitHead": "d990a3374d96e7c60e08cc5ca5c3726e8d2fec87"
