@@ -162,7 +162,7 @@ export type CollapseItemProps = {
 	search: string,
 	description?: string | (() => string) | VNode
 	disabled?: boolean
-	prompt?: string | (() => string) | VNode
+	prompt?: string | ((props: any) => string) | ((props: any) => VNode) | VNode
 	title?: string;
 	placement?: Placement;
 	className?: string;

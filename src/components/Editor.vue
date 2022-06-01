@@ -9,6 +9,7 @@
           </div>
         </div>
       </div>
+      <!-- <div ref="view"></div> -->
     </am-loading>
     <map-modal
       v-if="engine"
@@ -20,8 +21,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Engine, { $, EngineInterface, isMobile } from "@aomao/engine";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import Engine, {
+  $,
+  EngineInterface,
+  isMobile,
+  View,
+  ViewInterface,
+} from "@aomao/engine";
 import { message, Modal } from "ant-design-vue";
 import AmLoading from "./Loading.vue";
 import AmToolbar from "../../packages/toolbar/src";
@@ -39,9 +46,11 @@ import MapModal from "./Map/Modal.vue";
 export default class Editor extends Vue {
   loading = true;
   engine?: EngineInterface | null = null;
+  view?: ViewInterface | null = null;
   mobile = isMobile;
   items: GroupItemProps[] = [];
   mapModalVisible = false;
+  value = "";
 
   handleMapModalVisibleChange(visible: boolean) {
     this.mapModalVisible = visible;
@@ -205,13 +214,32 @@ export default class Editor extends Vue {
 
       // 监听编辑器值改变事件
       engine.on("change", () => {
-        console.log("value", engine.getValue());
+        const value = engine.getValue();
+        this.value = value;
+        console.log("value", value);
         console.log("html:", engine.getHtml());
       });
 
       this.engine = engine;
     }
+    const viewContainer = this.$refs.view;
+    if (viewContainer) {
+      const view = new View(viewContainer as Element, {
+        // 启用的插件
+        plugins,
+        // 启用的卡片
+        cards,
+        // 所有的卡片配置
+        config: pluginConfig,
+      });
+      this.view = view;
+    }
   }
+  @Watch("value", { immediate: true, deep: true })
+  watch(value: string) {
+    this.view?.render(value);
+  }
+
   onUnmounted() {
     this.engine?.destroy();
   }
