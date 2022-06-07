@@ -14,6 +14,12 @@ import "./index.css";
 export interface LinkOptions extends PluginOptions {
   hotkey?: string | Array<string>;
   markdown?: boolean;
+  onConfirm?: (
+		text: string,
+		link: string,
+	) => Promise<{ text: string; link: string }>;
+	enableToolbar?: boolean;
+	onLinkClick?: (e: MouseEvent, link: string) => void;
 }
 export default class<
   T extends LinkOptions = LinkOptions
@@ -44,9 +50,12 @@ export default class<
     
     const editor = this.editor;
     if (isEngine(editor)) {
-      this.toolbar = new Toolbar(editor, {
-        onConfirm: this.options.onConfirm,
-      });
+      if(this.options.enableToolbar !== false) {
+				this.toolbar = new Toolbar(editor, {
+					onConfirm: this.options.onConfirm,
+				});
+			}
+			editor.container.on('click', this.handleClick)
       editor.on('markdown-it', this.markdownIt);
       editor.on('paste:each', this.pasteHtml);
     }
@@ -54,6 +63,16 @@ export default class<
     editor.on("select", this.bindQuery);
     editor.language.add(locales);
   }
+
+  handleClick = (e: MouseEvent) => {
+		if(!e.target) return
+		const { onLinkClick } = this.options
+		if(!onLinkClick) return
+		const target = $(e.target).closest(`${this.tagName}`)
+		if(target.name === this.tagName) {
+			onLinkClick(e, target.attributes('href'))
+		}
+	}
 
   hotkey() {
     return this.options.hotkey || { key: "mod+k", args: ["_blank"] };
@@ -156,6 +175,7 @@ export default class<
 
   destroy(): void {
     const editor = this.editor
+    editor.container.off('click', this.handleClick)
 		editor.off('paste:each', this.pasteHtml);
     editor.off("parse:html", this.parseHtml);
     editor.off("select", this.bindQuery);
