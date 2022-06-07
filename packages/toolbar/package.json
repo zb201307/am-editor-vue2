@@ -1,6 +1,6 @@
 {
   "name": "am-editor-toolbar-vue2",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "description": "am-editor toolbar for vue2",
   "keywords": [
     "toolbar"
@@ -39,5 +39,5 @@
     "@types/lodash": "^4.14.178",
     "@types/tinycolor2": "^1.4.3"
   },
-  "gitHead": "d83ae13d28747bedf58c25405db6e8ba5d12cae5"
+  "gitHead": "898fe923d8a408cf59ae2e92a67b0b5aefc44378"
 }
