@@ -154,6 +154,12 @@ export default class Popup {
 
   showContent(callback?: () => void) {
     const result = this.#editor.trigger("toolbar-render", this.#options);
+    if (!result && (this.#options.items || []).length === 0) {
+      this.#vm?.$destroy();
+      this.#vm = undefined;
+      this.hide();
+      return;
+    }
     let content = Toolbar;
     if (typeof result === "object") {
       this.#vm?.$destroy();
