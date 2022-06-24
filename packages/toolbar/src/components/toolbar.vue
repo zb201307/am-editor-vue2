@@ -152,6 +152,7 @@ export default class Toolbar extends Vue {
   }
 
   update() {
+    if (isMobile) this.calcuMobileView();
     const data: Array<GroupDataProps> = [];
     const defaultConfig = getToolbarDefaultConfig(this.engine);
 
