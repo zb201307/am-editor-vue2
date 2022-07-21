@@ -65,7 +65,7 @@ export default class CollapseItem extends Vue {
     | string
     | ((props: any) => string) | ((props: any) => VNode)
     | VNode;
-  @Prop(Function) onClick?: (event: MouseEvent, name: string) => void | boolean;
+  @Prop(Function) onClick?: (event: MouseEvent, name: string, engine?: EngineInterface) => void | boolean;
   @Prop(Function) onMouseDown?: (event: MouseEvent) => void | boolean;
 
   iconIsHtml = false;
@@ -86,7 +86,7 @@ export default class CollapseItem extends Vue {
     const nodeName = (event.target as Node).nodeName;
     if (nodeName !== "INPUT" && nodeName !== "TEXTAREA") event.preventDefault();
 
-    if (this.onClick && this.onClick(event, this.name) === false) {
+    if (this.onClick && this.onClick(event, this.name, this.engine) === false) {
       return;
     }
     if (this.autoExecute !== false) {
