@@ -42,6 +42,7 @@ import { VNode } from "vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Tooltip } from "ant-design-vue";
 import {
+  EditorInterface,
   EngineInterface,
   formatHotkey,
   isMobile,
@@ -68,10 +69,22 @@ export default class Button extends Vue {
   @Prop({ type: String }) className?: string;
   @Prop({ type: [Boolean, Object], default: undefined }) active?: boolean;
   @Prop({ type: [Boolean, Object], default: undefined }) disabled?: boolean;
-  @Prop(Function) onClick?: (event: MouseEvent) => void | boolean;
-  @Prop(Function) onMouseDown?: (event: MouseEvent) => void | boolean;
-  @Prop(Function) onMouseEnter?: (event: MouseEvent) => void | boolean;
-  @Prop(Function) onMouseLevel?: (event: MouseEvent) => void | boolean;
+  @Prop(Function) onClick?: (
+    event: MouseEvent,
+    engine?: EditorInterface
+  ) => void | boolean;
+  @Prop(Function) onMouseDown?: (
+    event: MouseEvent,
+    engine?: EditorInterface
+  ) => void | boolean;
+  @Prop(Function) onMouseEnter?: (
+    event: MouseEvent,
+    engine?: EditorInterface
+  ) => void | boolean;
+  @Prop(Function) onMouseLevel?: (
+    event: MouseEvent,
+    engine?: EditorInterface
+  ) => void | boolean;
 
   visible = false;
   iconIsHtml = false;
@@ -100,22 +113,22 @@ export default class Button extends Vue {
   triggerMouseDown(event: MouseEvent) {
     event.preventDefault();
     if (this.disabled) return;
-    if (this.onMouseDown) this.onMouseDown(event);
+    if (this.onMouseDown) this.onMouseDown(event, this.engine);
     this.visible = false;
   }
   triggerMouseEnter(event: MouseEvent) {
-    if (this.onMouseEnter) this.onMouseEnter(event);
+    if (this.onMouseEnter) this.onMouseEnter(event, this.engine);
     this.visible = true;
   }
   triggerMouseLeave(event: MouseEvent) {
-    if (this.onMouseLevel) this.onMouseLevel(event);
+    if (this.onMouseLevel) this.onMouseLevel(event, this.engine);
     this.visible = false;
   }
   triggerClick(event: MouseEvent) {
     const nodeName = (event.target as Node).nodeName;
     if (nodeName !== "INPUT" && nodeName !== "TEXTAREA") event.preventDefault();
     if (this.disabled) return;
-    if (this.onClick && this.onClick(event) === false) return;
+    if (this.onClick && this.onClick(event, this.engine) === false) return;
     if (this.autoExecute !== false) {
       let commandName = this.name;
       let commandArgs = [];
