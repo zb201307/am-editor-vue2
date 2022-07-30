@@ -68,6 +68,7 @@ export default class<
           [DATA_SYNTAX]: "*",
           class: "*",
           language: "*",
+          "auto-wrap": "*",
         },
       },
       {
@@ -78,6 +79,7 @@ export default class<
             required: true,
             value: "*",
           },
+          "auto-wrap": "*",
         },
       },
       {
