@@ -6,8 +6,8 @@ import {
   Position,
 } from "@aomao/engine";
 import Vue from "vue";
-import AmEditor from "./editor.vue";
-import AmPreview from "./preview.vue";
+import LinkEditor from "./editor.vue";
+import LinkPreview from "./preview.vue";
 
 export type ToolbarOptions = {
   onConfirm?: (
@@ -15,7 +15,7 @@ export type ToolbarOptions = {
     link: string
   ) => Promise<{ text: string; link: string }>;
 };
-
+export { LinkEditor, LinkPreview };
 class Toolbar {
   private engine: EngineInterface;
   private root?: NodeInterface;
@@ -127,7 +127,7 @@ class Toolbar {
   editor(text: string, href: string, callback?: () => void) {
     const vm = new Vue({
       render: (h) => {
-        return h(AmEditor, {
+        return h(LinkEditor, {
           props: {
             language: this.engine.language,
             defaultText: text,
@@ -148,7 +148,7 @@ class Toolbar {
     const { change, inline, language } = this.engine;
     const vm = new Vue({
       render: (h) => {
-        return h(AmPreview, {
+        return h(LinkPreview, {
           props: {
             language,
             href,
@@ -234,8 +234,8 @@ class Toolbar {
         const { change, inline } = this.engine;
         const range = change.range.get();
         range.select(this.target, true);
-				inline.unwrap(range);
-				change.apply(range.collapse(true));
+        inline.unwrap(range);
+        change.apply(range.collapse(true));
       }
       if (clearTarget !== false) this.target = undefined;
     }

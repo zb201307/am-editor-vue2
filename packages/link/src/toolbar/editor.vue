@@ -24,7 +24,7 @@
       <p>
         <a-button
           class="data-link-button"
-          @click="onOk(text, link)"
+          @click="onOk ? onOk(text, link) : () => {}"
           :disabled="link.trim() === ''"
         >
           {{ buttonTitle }}

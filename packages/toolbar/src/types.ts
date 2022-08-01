@@ -168,7 +168,7 @@ export type CollapseItemProps = {
 	className?: string;
 	command?: { name: string; args: any[] } | any[];
 	autoExecute?: boolean;
-	onClick?: (event: MouseEvent, name: string) => boolean | void
+	onClick?: (event: MouseEvent, name: string, engine?: EngineInterface) => boolean | void
 	onMouseDown?: (event: MouseEvent) => void
 	onDisabled?: () => boolean;
 };

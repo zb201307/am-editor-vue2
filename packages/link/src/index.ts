@@ -5,7 +5,7 @@ import {
   isEngine,
   PluginOptions,
 } from "@aomao/engine";
-import type MarkdownIt from 'markdown-it';
+import type MarkdownIt from "markdown-it";
 import Toolbar from "./toolbar";
 import locales from "./locales";
 
@@ -15,12 +15,13 @@ export interface LinkOptions extends PluginOptions {
   hotkey?: string | Array<string>;
   markdown?: boolean;
   onConfirm?: (
-		text: string,
-		link: string,
-	) => Promise<{ text: string; link: string }>;
-	enableToolbar?: boolean;
-	onLinkClick?: (e: MouseEvent, link: string) => void;
+    text: string,
+    link: string
+  ) => Promise<{ text: string; link: string }>;
+  enableToolbar?: boolean;
+  onLinkClick?: (e: MouseEvent, link: string) => void;
 }
+
 export default class<
   T extends LinkOptions = LinkOptions
 > extends InlinePlugin<T> {
@@ -47,17 +48,17 @@ export default class<
 
   init() {
     super.init();
-    
+
     const editor = this.editor;
     if (isEngine(editor)) {
-      if(this.options.enableToolbar !== false) {
-				this.toolbar = new Toolbar(editor, {
-					onConfirm: this.options.onConfirm,
-				});
-			}
-			editor.container.on('click', this.handleClick)
-      editor.on('markdown-it', this.markdownIt);
-      editor.on('paste:each', this.pasteHtml);
+      if (this.options.enableToolbar !== false) {
+        this.toolbar = new Toolbar(editor, {
+          onConfirm: this.options.onConfirm,
+        });
+      }
+      editor.container.on("click", this.handleClick);
+      editor.on("markdown-it", this.markdownIt);
+      editor.on("paste:each", this.pasteHtml);
     }
     editor.on("parse:html", this.parseHtml);
     editor.on("select", this.bindQuery);
@@ -65,14 +66,14 @@ export default class<
   }
 
   handleClick = (e: MouseEvent) => {
-		if(!e.target) return
-		const { onLinkClick } = this.options
-		if(!onLinkClick) return
-		const target = $(e.target).closest(`${this.tagName}`)
-		if(target.name === this.tagName) {
-			onLinkClick(e, target.attributes('href'))
-		}
-	}
+    if (!e.target) return;
+    const { onLinkClick } = this.options;
+    if (!onLinkClick) return;
+    const target = $(e.target).closest(`${this.tagName}`);
+    if (target.name === this.tagName) {
+      onLinkClick(e, target.attributes("href"));
+    }
+  };
 
   hotkey() {
     return this.options.hotkey || { key: "mod+k", args: ["_blank"] };
@@ -134,30 +135,30 @@ export default class<
     return this.query();
   }
   markdownIt = (mardown: MarkdownIt) => {
-		if (this.options.markdown !== false) {
-			mardown.enable('link');
-			mardown.enable('linkify');
-		}
-	};
+    if (this.options.markdown !== false) {
+      mardown.enable("link");
+      mardown.enable("linkify");
+    }
+  };
 
   pasteHtml = (child: NodeInterface) => {
-		if (child.isText()) {
-			const text = child.text();
-			const { node, inline } = this.editor;
-			if (
-				/^https?:\/\/\S+$/.test(text.toLowerCase().trim()) &&
-				inline.closest(child).equal(child)
-			) {
-				const newNode = node.wrap(
-					child,
-					$(`<${this.tagName} target="_blank" href="${text}"></a>`),
-				);
-				inline.repairCursor(newNode);
-				return false;
-			}
-		}
-		return true;
-	};
+    if (child.isText()) {
+      const text = child.text();
+      const { node, inline } = this.editor;
+      if (
+        /^https?:\/\/\S+$/.test(text.toLowerCase().trim()) &&
+        inline.closest(child).equal(child)
+      ) {
+        const newNode = node.wrap(
+          child,
+          $(`<${this.tagName} target="_blank" href="${text}"></a>`)
+        );
+        inline.repairCursor(newNode);
+        return false;
+      }
+    }
+    return true;
+  };
 
   parseHtml = (root: NodeInterface) => {
     root.find(this.tagName).css({
@@ -174,11 +175,11 @@ export default class<
   };
 
   destroy(): void {
-    const editor = this.editor
-    editor.container.off('click', this.handleClick)
-		editor.off('paste:each', this.pasteHtml);
+    const editor = this.editor;
+    editor.container.off("click", this.handleClick);
+    editor.off("paste:each", this.pasteHtml);
     editor.off("parse:html", this.parseHtml);
     editor.off("select", this.bindQuery);
-    editor.off('markdown-it', this.markdownIt);
+    editor.off("markdown-it", this.markdownIt);
   }
 }
