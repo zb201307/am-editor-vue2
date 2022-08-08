@@ -39,7 +39,7 @@ export default class AmCollapseGroup extends Vue {
   onClick(event: MouseEvent, name: string, engine?: EngineInterface) {
     let result;
     const item = this.items.find((item) => item.name === name);
-    if (item?.onClick) result = item.onClick(event, name, engine);
+    if (item && item.onClick) result = item.onClick(event, name, engine);
     if (this.onSelect) this.onSelect(event, name, engine);
     return result;
   }

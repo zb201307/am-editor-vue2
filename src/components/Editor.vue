@@ -237,11 +237,11 @@ export default class Editor extends Vue {
   }
   @Watch("value", { immediate: true, deep: true })
   watch(value: string) {
-    this.view?.render(value);
+    if (this.view) this.view.render(value);
   }
 
   onUnmounted() {
-    this.engine?.destroy();
+    if (this.engine) this.engine.destroy();
   }
 }
 </script>
