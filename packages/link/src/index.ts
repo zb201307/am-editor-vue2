@@ -156,6 +156,15 @@ export default class<
         inline.repairCursor(newNode);
         return false;
       }
+    } else if (child.name === "a") {
+      const href = child.attributes("href");
+      child.attributes("target", "_blank");
+      child.attributes(
+        "href",
+        decodeURI(href)
+          .trim()
+          .replace(/\u200b/g, "")
+      );
     }
     return true;
   };
