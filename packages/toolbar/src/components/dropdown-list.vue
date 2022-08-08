@@ -105,8 +105,8 @@ export default class DropdownList extends Vue {
     this.isMobile = isMobile;
 
     const current = this.$refs.elementRef;
-    if (!current) return;
-    const scrollElement = this.engine?.scrollNode?.get<HTMLElement>();
+    if (!current || !this.engine || !this.engine.scrollNode) return;
+    const scrollElement = this.engine.scrollNode.get<HTMLElement>();
     if (!scrollElement) return;
     const rect = (current as Element).getBoundingClientRect();
     const scrollRect = scrollElement.getBoundingClientRect();
@@ -132,7 +132,7 @@ export default class DropdownList extends Vue {
           commandArgs = commandArgs.concat(command);
         }
       }
-      this.engine?.command.execute(commandName, ...commandArgs);
+      if (this.engine) this.engine.command.execute(commandName, ...commandArgs);
     }
   }
 }

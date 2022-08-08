@@ -92,7 +92,7 @@ export default class Button extends Vue {
   hotkeyText = "";
 
   mounted() {
-    this.iconIsHtml = /^<.*>/.test(this.icon?.trim() || "");
+    this.iconIsHtml = /^<.*>/.test(this.icon ? this.icon.trim() : "");
     let hotkeyText: undefined | string = undefined;
     //默认获取插件的热键
     if (this.engine && (this.hotkey === true || this.hotkey === undefined)) {
@@ -140,7 +140,7 @@ export default class Button extends Vue {
           commandArgs = this.command;
         }
       }
-      this.engine?.command.execute(commandName, ...commandArgs);
+      if (this.engine) this.engine.command.execute(commandName, ...commandArgs);
     }
   }
 }

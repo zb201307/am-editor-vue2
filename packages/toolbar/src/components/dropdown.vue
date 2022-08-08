@@ -146,7 +146,8 @@ export default class Dropdown extends Vue {
       };
     }
     this.valuesVar =
-      values || (this.icon || this.content ? "" : defaultItem?.key || "");
+      values ||
+      (this.icon || this.content ? "" : defaultItem ? defaultItem.key : "");
   }
 
   @Watch("visible", { immediate: true, deep: true })

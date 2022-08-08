@@ -151,8 +151,8 @@ export default class AmColor extends Vue {
         document.addEventListener("click", this.hideDropdown);
         setTimeout(() => {
             const current = this.$refs.elementRef;
-            if (!current) return;
-            const scrollElement = this.engine?.scrollNode?.get<HTMLElement>();
+            if (!current || !this.engine || !this.engine.scrollNode) return;
+            const scrollElement = this.engine.scrollNode.get<HTMLElement>();
             if (!scrollElement) return;
             const rect = (current as Element).getBoundingClientRect();
             const scrollRect = scrollElement.getBoundingClientRect();
@@ -186,7 +186,7 @@ export default class AmColor extends Vue {
           commandArgs = this.command;
         }
       }
-      this.engine?.command.execute(commandName, ...commandArgs);
+      if (this.engine) this.engine.command.execute(commandName, ...commandArgs);
     }
     if (this.onSelect) this.onSelect(color, event);
   }

@@ -72,7 +72,7 @@ export default class CollapseItem extends Vue {
   active = false;
 
   mounted() {
-    this.iconIsHtml = /^<.*>/.test(this.icon?.trim() || "");
+    this.iconIsHtml = /^<.*>/.test(this.icon ? this.icon.trim() : "");
   }
 
   handleMouseDown(event: MouseEvent) {
@@ -100,7 +100,7 @@ export default class CollapseItem extends Vue {
           commandArgs = this.command;
         }
       }
-      this.engine?.command.execute(commandName, ...commandArgs);
+      if (this.engine) this.engine.command.execute(commandName, ...commandArgs);
     }
   }
 
