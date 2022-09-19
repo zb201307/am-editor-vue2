@@ -219,6 +219,20 @@ export default class Editor extends Vue {
         console.log("value", value);
         console.log("html:", engine.getHtml());
       });
+      engine.on("mention:default", () => {
+        return [
+          {
+            key: "1",
+            name: "User1",
+            avatar: "https://avatars.githubusercontent.com/u/17873876?v=4",
+          },
+          {
+            key: "2",
+            name: "User2",
+            avatar: "https://avatars.githubusercontent.com/u/55792257?v=4",
+          },
+        ];
+      });
 
       this.engine = engine;
     }

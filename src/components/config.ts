@@ -47,7 +47,9 @@ import Link from "../../packages/link/src";
 import CodeBlock, { CodeBlockComponent } from "../../packages/codeblock/src";
 import MapPlugin, { MapComponent } from "../../packages/map/src";
 import Audio, { AudioComponent, AudioUploader } from "../../packages/audio/src";
-
+import MentionHover from "./MentionHover.vue";
+import { creatComponent } from "../utils";
+import AmLoading from "./Loading.vue";
 const DOMAIN = "http://localhost:7001";
 
 export const plugins: Array<PluginEntry> = [
@@ -155,14 +157,12 @@ export const pluginConfig: { [key: string]: PluginOptions } = {
     },
   },
   [Mention.pluginName]: {
-    action: `${DOMAIN}/user/search`,
+    // action: `${DOMAIN}/user/search`,
     onLoading: (root: NodeInterface) => {
-      //const vm = createApp(Loading);
-      //vm.mount(root.get<HTMLElement>()!);
+      creatComponent(AmLoading, root.get<HTMLElement>()!);
     },
     onEmpty: (root: NodeInterface) => {
-      //const vm = createApp(Empty);
-      //vm.mount(root.get<HTMLElement>()!);
+      // creatComponent(Empty, root.get<HTMLElement>()!);
     },
     onClick: (
       root: NodeInterface,
@@ -174,10 +174,7 @@ export const pluginConfig: { [key: string]: PluginOptions } = {
       layout: NodeInterface,
       { name }: { key: string; name: string }
     ) => {
-      //const vm = createApp(MentionPopover, {
-      //   name,
-      //});
-      //vm.mount(layout.get<HTMLElement>()!);
+      creatComponent(MentionHover, layout.get<HTMLElement>()!, { name });
     },
   },
   [Fontsize.pluginName]: {
