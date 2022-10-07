@@ -1,8 +1,8 @@
-import Vue from "vue";
-import { $, isEngine, isMobile, Range, UI_SELECTOR } from "@aomao/engine";
-import type { NodeInterface, EditorInterface } from "@aomao/engine";
-import Toolbar from "../../components/toolbar.vue";
-import type { GroupItemProps } from "../../types";
+import Vue from 'vue';
+import { $, isEngine, isMobile, Range, UI_SELECTOR } from '@aomao/engine';
+import type { NodeInterface, EditorInterface } from '@aomao/engine';
+import Toolbar from '../../components/toolbar.vue';
+import type { GroupItemProps } from '../../types';
 
 type PopupOptions = {
   items?: GroupItemProps[];
@@ -11,8 +11,8 @@ type PopupOptions = {
 export default class Popup {
   #editor: EditorInterface;
   #root: NodeInterface;
-  #point: Record<"left" | "top", number> = { left: 0, top: -9999 };
-  #align: "top" | "bottom" = "bottom";
+  #point: Record<'left' | 'top', number> = { left: 0, top: -9999 };
+  #align: 'top' | 'bottom' = 'bottom';
   #options: PopupOptions = {};
   #vm?: Vue;
 
@@ -24,20 +24,18 @@ export default class Popup {
       this.#root[0]
     );
     if (isEngine(editor)) {
-      this.#editor.on("select", this.onSelect);
+      this.#editor.on('selectEnd', this.onSelect);
     } else {
-      document.addEventListener("selectionchange", this.onSelect);
+      document.addEventListener('selectionchange', this.onSelect);
     }
-    if (!isMobile) window.addEventListener("scroll", this.onSelect);
-    window.addEventListener("resize", this.onSelect);
-    this.#editor.scrollNode?.on("scroll", this.onSelect);
-    document.addEventListener("mousedown", this.hide);
+    if (!isMobile) window.addEventListener('scroll', this.onSelect);
+    window.addEventListener('resize', this.onSelect);
+    this.#editor.scrollNode?.on('scroll', this.onSelect);
+    document.addEventListener('mousedown', this.hide);
   }
 
   onSelect = () => {
-    const range = Range.from(this.#editor)
-      ?.cloneRange()
-      .shrinkToTextNode();
+    const range = Range.from(this.#editor)?.cloneRange().shrinkToTextNode();
     const selection = window.getSelection();
     if (
       !range ||
@@ -103,27 +101,27 @@ export default class Popup {
         bottomRange.startNode.equal(selection.focusNode!) &&
         (!topRange.startNode.equal(selection.focusNode!) ||
           selection.focusOffset > selection.anchorOffset)
-          ? "bottom"
-          : "top";
+          ? 'bottom'
+          : 'top';
       const space = 12;
-      let targetRect = this.#align === "bottom" ? bottomRect : topRect;
+      let targetRect = this.#align === 'bottom' ? bottomRect : topRect;
       if (
-        this.#align === "top" &&
+        this.#align === 'top' &&
         targetRect.top - rootRect.height - space <
           window.innerHeight - (this.#editor.scrollNode?.height() || 0)
       ) {
-        this.#align = "bottom";
+        this.#align = 'bottom';
       } else if (
-        this.#align === "bottom" &&
+        this.#align === 'bottom' &&
         targetRect.bottom + rootRect.height + space > window.innerHeight
       ) {
-        this.#align = "top";
+        this.#align = 'top';
       }
-      targetRect = this.#align === "bottom" ? bottomRect : topRect;
+      targetRect = this.#align === 'bottom' ? bottomRect : topRect;
       const scrollElement = this.#editor.scrollNode?.get<HTMLElement>();
       const scrollNodeRect = scrollElement?.getBoundingClientRect();
       const top =
-        this.#align === "top"
+        this.#align === 'top'
           ? targetRect.top -
             rootRect.height -
             space -
@@ -153,7 +151,7 @@ export default class Popup {
   };
 
   showContent(callback?: () => void) {
-    const result = this.#editor.trigger("toolbar-render", this.#options);
+    const result = this.#editor.trigger('toolbar-render', this.#options);
     if (!result && (this.#options.items || []).length === 0) {
       this.#vm?.$destroy();
       this.#vm = undefined;
@@ -161,7 +159,7 @@ export default class Popup {
       return;
     }
     let content = Toolbar;
-    if (typeof result === "object") {
+    if (typeof result === 'object') {
       this.#vm?.$destroy();
       this.#vm = undefined;
       content = result;
@@ -189,28 +187,28 @@ export default class Popup {
     if (event?.target) {
       const target = $(event.target);
       if (
-        target.closest(".data-toolbar-popup-wrapper").length > 0 ||
+        target.closest('.data-toolbar-popup-wrapper').length > 0 ||
         target.closest(UI_SELECTOR).length > 0
       )
         return;
     }
     this.#root.css({
-      left: "0px",
-      top: "-9999px",
+      left: '0px',
+      top: '-9999px',
     });
   };
 
   destroy() {
     this.#root.remove();
     if (isEngine(this.#editor)) {
-      this.#editor.off("select", this.onSelect);
+      this.#editor.off('select', this.onSelect);
     } else {
-      document.removeEventListener("selectionchange", this.onSelect);
+      document.removeEventListener('selectionchange', this.onSelect);
     }
-    if (!isMobile) window.removeEventListener("scroll", this.onSelect);
-    window.removeEventListener("resize", this.onSelect);
-    this.#editor.scrollNode?.off("scroll", this.onSelect);
-    document.removeEventListener("mousedown", this.hide);
+    if (!isMobile) window.removeEventListener('scroll', this.onSelect);
+    window.removeEventListener('resize', this.onSelect);
+    this.#editor.scrollNode?.off('scroll', this.onSelect);
+    document.removeEventListener('mousedown', this.hide);
     if (this.#vm) {
       this.#vm.$destroy();
       this.#vm = undefined;
